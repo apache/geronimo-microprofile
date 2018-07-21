@@ -1,0 +1,12 @@
+= Geronimo Microprofile
+
+This repository is intended to provide some aggregators for Microprofile at Apache Geronimo.
+
+It can be:
+
+1. Some pom regrouping different specifications
+2. Some pom regrouping different specifications+geronimo implementations
+3. Some pom enriching a server with the implementations
+4. Etc
+
+But it must not be a project with real code, it is just about aggregation and potentially documentation.
