@@ -92,16 +92,6 @@
   </issueManagement>
 
   <repositories>
-    <repository> <!-- tmp during the vote -->
-      <id>meecrowave-staging</id>
-      <url>https://repository.apache.org/content/repositories/orgapacheopenwebbeans-1044</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
     <repository>
       <id>apache.snapshots</id>
       <url>https://repository.apache.org/content/repositories/snapshots/</url>
@@ -114,16 +104,6 @@
     </repository>
   </repositories>
   <pluginRepositories>
-    <pluginRepository> <!-- tmp during the vote -->
-      <id>meecrowave-staging</id>
-      <url>https://repository.apache.org/content/repositories/orgapacheopenwebbeans-1044</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </pluginRepository>
     <pluginRepository>
       <id>apache.snapshots</id>
       <url>https://repository.apache.org/content/repositories/snapshots/</url>
