@@ -1,0 +1,19 @@
+= Downloads
+:jbake-date: 2018-07-24
+:icons: font
+
+[.table.table-bordered,options="header"]
+|===
+
+|Name|Version|Date|Size|Type|Links
+
+|Geronimo Config Impl|1.1|2 janv. 2018|59 MB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.1/geronimo-config-impl-1.1.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.1/geronimo-config-impl-1.1.jar.sha1[icon:download[] SHA1]
+|Geronimo Openapi Impl|1.0.0|16 juil. 2018|157 MB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-openapi-impl/1.0.0/geronimo-openapi-impl-1.0.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-openapi-impl/1.0.0/geronimo-openapi-impl-1.0.0.jar.sha1[icon:download[] SHA1]
+|Safeguard Impl|1.0|6 janv. 2018|64 MB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/safeguard/safeguard-impl/1.0/safeguard-impl-1.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/safeguard/safeguard-impl/1.0/safeguard-impl-1.0.jar.sha1[icon:download[] SHA1]
+|Geronimo Metrics|1.0.0|15 juin 2018|73 MB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-metrics/1.0.0/geronimo-metrics-1.0.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-metrics/1.0.0/geronimo-metrics-1.0.0.jar.sha1[icon:download[] SHA1]
+|Geronimo Config Impl|1.2|10 juin 2018|70 MB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.2/geronimo-config-impl-1.2.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.2/geronimo-config-impl-1.2.jar.sha1[icon:download[] SHA1]
+|Geronimo Health|1.0.0|16 juil. 2018|19 MB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-health/1.0.0/geronimo-health-1.0.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-health/1.0.0/geronimo-health-1.0.0.jar.sha1[icon:download[] SHA1]
+|Geronimo Jwt Auth|1.0.0|13 juin 2018|67 MB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-jwt-auth/1.0.0/geronimo-jwt-auth-1.0.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-jwt-auth/1.0.0/geronimo-jwt-auth-1.0.0.jar.sha1[icon:download[] SHA1]
+|Geronimo Config Impl|1.0|10 sept. 2017|53 MB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.0/geronimo-config-impl-1.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.0/geronimo-config-impl-1.0.jar.sha1[icon:download[] SHA1]
+
+|===

@@ -1,0 +1,41 @@
+= Apache Geronimo Health
+:jbake-date: 2018-07-24
+:icons: font
+
+Apache Geronimo Health is an implementation of Microprofile Health.
+It provides a way to implement and expose through HTTP healthchecks
+to ensure you application is functional.
+
+== Dependencies
+
+=== API
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.microprofile.health</groupId>
+  <artifactId>microprofile-health-api</artifactId>
+  <version>1.0</version>
+  <exclusions>
+    <exclusion>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+    </exclusion>
+    <exclusion>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.annotation.versioning</artifactId>
+    </exclusion>
+  </exclusions>
+</dependency>
+----
+
+=== Implementation
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.apache.geronimo</groupId>
+  <artifactId>geronimo-health</artifactId>
+  <version>1.0.0</version>
+</dependency>
+----

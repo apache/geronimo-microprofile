@@ -1,0 +1,61 @@
+= Apache Geronimo OpenTracing
+:jbake-date: 2018-07-24
+:icons: font
+
+Apache Geronimo OpenTracing is an implementation of Microprofile OpenTracing.
+It provides a way to track JAX-RS calls (client and server) in a distributed system.
+
+== Dependencies
+
+=== API
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.microprofile.opentracing</groupId>
+  <artifactId>microprofile-opentracing-api</artifactId>
+  <version>1.1</version>
+  <exclusions>
+    <exclusion>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+    </exclusion>
+    <exclusion>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.annotation.versioning</artifactId>
+    </exclusion>
+    <exclusion>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+    </exclusion>
+    <exclusion>
+      <groupId>org.apache.geronimo.specs</groupId>
+      <artifactId>geronimo-atinject_1.0_spec</artifactId>
+    </exclusion>
+    <exclusion>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>javax.ws.rs-api</artifactId>
+    </exclusion>
+    <exclusion>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+    </exclusion>
+  </exclusions>
+</dependency>
+----
+
+=== Implementation
+
+[source,xml]
+----
+<dependency>
+  <groupId>io.opentracing</groupId>
+  <artifactId>opentracing-api</artifactId>
+  <version>0.31.0</version>
+</dependency>
+<dependency>
+  <groupId>org.apache.geronimo</groupId>
+  <artifactId>geronimo-opentracing</artifactId>
+  <version>1.0.1-SNAPSHOT</version>
+</dependency>
+----

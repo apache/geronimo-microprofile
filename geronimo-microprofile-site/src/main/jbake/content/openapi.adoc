@@ -1,0 +1,31 @@
+= Apache Geronimo OpenAPI
+:jbake-date: 2018-07-24
+:icons: font
+
+Apache Geronimo OpenAPI is an implementation of Microprofile OpenAPI.
+It is highly inspired from Swagger and relies on the OpenAPI initiative.
+It allows you to document your endpoint using annotations or a pre-generated JSON.
+
+== Dependencies
+
+=== API
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.microprofile.openapi</groupId>
+  <artifactId>microprofile-openapi-api</artifactId>
+  <version>1.0.1</version>
+</dependency>
+----
+
+=== Implementation
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.apache.geronimo</groupId>
+  <artifactId>geronimo-openapi-impl</artifactId>
+  <version>1.0.0</version>
+</dependency>
+----

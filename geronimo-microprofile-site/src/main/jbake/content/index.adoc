@@ -1,0 +1,30 @@
+= Apache Geronimo And Microprofile
+:jbake-date: 2018-07-24
+:icons: font
+
+Apache Geronimo hosts several Microprofile Implementation.
+This site let's you get started with all of them.
+
+link:downloads.html[icon:download[] Downloads Area]
+
+Here are the available implementations:
+
+link:config.html[icon:database[] Config] |
+link:fault-tolerance.html[icon:exclamation-triangle[] Fault Tolerance (Safeguard)] |
+link:jwt-auth.html[icon:shield[] JWT Auth] |
+link:opentracing.html[icon:truck[] OpenTracing] |
+link:health.html[icon:medkit[] Health] |
+link:metrics.html[icon:balance-scale[] Metrics] |
+link:openapi.html[icon:briefcase[] OpenAPI]
+
+Note we also provide some pom aggregator to import all the stack at once:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.apache.geronimo</groupId>
+  <artifactId>geronimo-microprofile-agrgegator</artifactId>
+  <version>1.0.0</version>
+  <type>pom</type>
+</dependency>
+----

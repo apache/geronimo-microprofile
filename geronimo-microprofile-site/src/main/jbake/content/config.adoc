@@ -1,0 +1,37 @@
+= Apache Geronimo Config
+:jbake-date: 2018-07-24
+:icons: font
+
+Apache Geronimo Config is an implementation of Microprofile Config.
+This specification intends to standardize the way you configure an application
+and decouple the write side of the data (sources) from the read side in your application.
+
+== Dependencies
+
+=== API
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.microprofile.config</groupId>
+  <artifactId>microprofile-config-api</artifactId>
+  <version>1.2.1</version>
+  <exclusions>
+    <exclusion>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.annotation.versioning</artifactId>
+    </exclusion>
+  </exclusions>
+</dependency>
+----
+
+=== Implementation
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.apache.geronimo.config</groupId>
+  <artifactId>geronimo-config-impl</artifactId>
+  <version>1.2</version>
+</dependency>
+----

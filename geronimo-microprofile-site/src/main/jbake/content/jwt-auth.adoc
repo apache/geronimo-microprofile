@@ -1,0 +1,36 @@
+= Apache Geronimo JWT Auth
+:jbake-date: 2018-07-24
+:icons: font
+
+Apache Geronimo JWT Auth is an implementation of Microprofile JWT Auth.
+It provides a way to validate and interact with a JWT metadata.
+
+== Dependencies
+
+=== API
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.eclipse.microprofile.jwt</groupId>
+  <artifactId>microprofile-jwt-auth-api</artifactId>
+  <version>1.1</version>
+  <exclusions>
+    <exclusion>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.annotation.versioning</artifactId>
+    </exclusion>
+  </exclusions>
+</dependency>
+----
+
+=== Implementation
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.apache.geronimo</groupId>
+  <artifactId>geronimo-jwt-auth</artifactId>
+  <version>1.0.0</version>
+</dependency>
+----
