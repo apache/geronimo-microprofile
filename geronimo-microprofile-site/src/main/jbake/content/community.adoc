@@ -1,0 +1,30 @@
+= Community
+:jbake-date: 2018-07-26
+:icons: font
+
+=== The Source Code
+
+Source code is available on gitbox:
+
+* link:https://gitbox.apache.org/repos/asf?p=geronimo-config.git[icon:database[] Config]
+* link:https://gitbox.apache.org/repos/asf?p=geronimo-safeguard.git[icon:exclamation-triangle[] Fault Tolerance (Safeguard)]
+* link:https://gitbox.apache.org/repos/asf?p=geronimo-jwt-auth.git[icon:shield[] JWT Auth]
+* link:https://gitbox.apache.org/repos/asf?p=geronimo-opentracing.git[icon:truck[] OpenTracing]
+* link:https://gitbox.apache.org/repos/asf?p=geronimo-health.git[icon:medkit[] Health]
+* link:https://gitbox.apache.org/repos/asf?p=geronimo-metrics.git[icon:balance-scale[] Metrics]
+* link:https://gitbox.apache.org/repos/asf?p=geronimo-openapi.git[icon:briefcase[] OpenAPI]
+* link:https://gitbox.apache.org/repos/asf?p=geronimo-microprofile.git[icon:globe[] All In One]
+
+=== Social Media: cause contributing is not only about coding
+
+link:https://twitter.com/ASFGeronimo[icon:twitter[] Twitter]
+link:https://webchat.freenode.net/?channels=geronimo[icon:terminal[] IRC]
+
+=== Mailing lists
+
+* link:mailto:user-subscribe@geronimo.apache.org[Subscribe] to user@geronimo.apache.org
+* link:mailto:user-unsubscribe@geronimo.apache.org[Unsubscribe] from user@geronimo.apache.org
+* link:mailto:user@geronimo.apache.org[Post a message] on user@geronimo.apache.org
+
+Archives can be found on link:http://apache-geronimo.328035.n3.nabble.com/[Nabble].
+

@@ -1,22 +1,29 @@
-    <section class="menu cid-qv1frvgcz3" once="menu" id="menu1-3e" data-rv-view="4067">
-        <nav class="navbar navbar-expand beta-menu navbar-dropdown align-items-center navbar-fixed-top navbar-toggleable-sm">
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <div class="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </button>
-            <div class="menu-logo">
-                <div class="navbar-brand">
+<div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+  <div class="container">
+    <a href="index.html" class="navbar-brand">Apache Geronimo Microprofile</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="modules">Modules <span class="caret"></span></a>
+          <div class="dropdown-menu" aria-labelledby="modules">
+            <a class="dropdown-item" href="config.html"><i class="fa fa-database"></i> Config</a>
+            <a class="dropdown-item" href="fault-tolerance.html"><i class="fa fa-exclamation-triangle"></i> Safeguard</a>
+            <a class="dropdown-item" href="jwt-auth.html"><i class="fa fa-shield"></i> JWT Auth</a>
+            <a class="dropdown-item" href="opentracing.html"><i class="fa fa-truck"></i> OpenTracing</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="health.html"><i class="fa fa-medkit"></i> Health</a>
+            <a class="dropdown-item" href="metrics.html"><i class="fa fa-balance-scale"></i> Metrics</a>
+            <a class="dropdown-item" href="openapi.html"><i class="fa fa-briefcase"></i> OpenAPI</a>
+          </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="community.html">Community</a>
+      </ul>
+    </div>
+  </div>
+</div>
 
-                    <span class="navbar-caption-wrap"><a class="navbar-caption text-black display-4"
-                            href="index.html">
-                            Apache Geronimo Microprofile</a></span>
-                </div>
-            </div>
-        </nav>
-    </section>
-
-    <div class="container">
+<div class="container">

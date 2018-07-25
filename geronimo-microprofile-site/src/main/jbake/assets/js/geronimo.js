@@ -51,12 +51,12 @@ $(function() {
       if (!gav.success) {
         return;
       }
-      listingblockParent.html('<ul class="nav nav-tabs">'+
-        '<li class="show active"><a data-toggle="tab" href="#__generated_code_tab_maven_' + codeCounter + '">Maven</a></li>' +
-        '<li><a data-toggle="tab" href="#__generated_code_tab_gradle_' + codeCounter + '">Gradle</a></li>' +
-        '<li><a data-toggle="tab" href="#__generated_code_tab_sbt_' + codeCounter + '">SBT</a></li>' +
-        '<li><a data-toggle="tab" href="#__generated_code_tab_ivy_' + codeCounter + '">Ivy</a></li>' +
-        '<li><a data-toggle="tab" href="#__generated_code_tab_grapes_' + codeCounter + '">Grapes</a></li>' +
+      listingblockParent.html('<ul class="nav nav-tabs flex-column flex-sm-row">'+
+        '<li class="nav-item"><a class="nav-link show active" data-toggle="tab" href="#__generated_code_tab_maven_' + codeCounter + '">Maven</a></li>' +
+        '<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#__generated_code_tab_gradle_' + codeCounter + '">Gradle</a></li>' +
+        '<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#__generated_code_tab_sbt_' + codeCounter + '">SBT</a></li>' +
+        '<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#__generated_code_tab_ivy_' + codeCounter + '">Ivy</a></li>' +
+        '<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#__generated_code_tab_grapes_' + codeCounter + '">Grapes</a></li>' +
       '</ul>' +
       '<div class="tab-content dependency-sample">' +
         '<div id="__generated_code_tab_maven_' + codeCounter + '" class="tab-pane fade in show active">' +
