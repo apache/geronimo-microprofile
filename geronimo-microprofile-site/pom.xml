@@ -83,6 +83,27 @@
           </dependency>
         </dependencies>
       </plugin>
+      <plugin> <!-- mvn clean package pre-site scm-publish:publish-scm -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-publish-plugin</artifactId>
+        <version>1.0-beta-2</version>
+        <configuration>
+          <content>${project.build.directory}/${project.build.finalName}</content>
+          <pubScmUrl>scm:svn:https://svn.apache.org/repos/infra/websites/production/geronimo/content/microprofile</pubScmUrl>
+          <tryUpdate>true</tryUpdate>
+          <checkoutDirectory>${project.parent.basedir}/.site-content</checkoutDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>scm-publish</id>
+            <phase>site-deploy</phase>
+            <!-- deploy site with maven-scm-publish-plugin -->
+            <goals>
+              <goal>publish-scm</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
