@@ -29,3 +29,37 @@ It allows you to document your endpoint using annotations or a pre-generated JSO
   <version>1.0.0</version>
 </dependency>
 ----
+
+=== Maven Plugin
+
+The maven plugin allows you to generate an ̀`openapi.json` at build time:
+
+[source,xml]
+----
+<plugin>
+  <groupId>org.apache.geronimo</groupId>
+  <artifactId>geronimo-openapi-maven-plugin</artifactId>
+  <version>${openapi.version}</version>
+  <executions>
+    <execution>
+      <id>generate-openapi.json</id>
+      <goals>
+        <goal>openapi.json</goal>
+      </goals>
+      <configuration>
+        <application>com.test.MyApp</application>
+        <endpointClasses>
+          <endpointClass>com.test.SomeEndpoint</endpointClass>
+          <endpointClass>com.test.SomeOtherEndpoint</endpointClass>
+        </endpointClasses>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+----
+
+Since it uses static analysis (no scanning yet) then you need to fill the application class
+if you have any custom configuration on it and all endpoints you want to document.
+
+Then for your runtime you can set the following configuration entries to avoid the runtime to scan again `mp.openapi.scan.disable=true`.
+
