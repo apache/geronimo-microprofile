@@ -21,6 +21,10 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" href="community.html">Community</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="downloads.html">Downloads</a>
+        </li>
       </ul>
     </div>
   </div>
