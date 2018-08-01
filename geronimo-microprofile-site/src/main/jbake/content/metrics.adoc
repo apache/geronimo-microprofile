@@ -5,6 +5,9 @@
 Apache Geronimo Metrics is an implementation of Microprofile Metrics.
 It is highly inspired from Codehale/Dropwizard metrics API and integrates with CDI.
 
+IMPORTANT: for security reasons you need to set the system property `geronimo.metrics.jaxrs.activated=true` to
+have the `/metrics` endpoint activated.
+
 == Dependencies
 
 === API
