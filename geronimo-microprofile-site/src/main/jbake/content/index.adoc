@@ -23,8 +23,21 @@ Note we also provide some pom aggregator to import all the stack at once:
 ----
 <dependency>
   <groupId>org.apache.geronimo</groupId>
-  <artifactId>geronimo-microprofile-agrgegator</artifactId>
-  <version>1.0.0</version>
+  <artifactId>geronimo-microprofile-aggregator</artifactId>
+  <version>${geronimo-microprofile.version}</version>
+  <type>pom</type>
+</dependency>
+----
+
+Finally we provide μ~ (utilda) which is a pom with link:http://openwebbeans.apache.org/meecrowave/[Apache Meecrowave] and the Aggregator pom which makes
+you a one dependency Microprofile 2.0 server, ready to use:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.apache.geronimo</groupId>
+  <artifactId>utilda</artifactId>
+  <version>${geronimo-microprofile.version}</version>
   <type>pom</type>
 </dependency>
 ----
