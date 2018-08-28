@@ -34,3 +34,40 @@ It provides a way to validate and interact with a JWT metadata.
   <version>1.0.0</version>
 </dependency>
 ----
+
+=== Test a service layer (without servlet layer)
+
+In 1.0.0 you have to mock a request and use the Geronimo JWT Auth extension
+to mock the JWT context. In 1.0.1 this is simplified thanks to  `TokenAccessor`
+abstraction which requires only to provide the "current" token.
+In this same version a token can be instantiated thanks to `JwtParser` (previously you had to
+implement `JsonWebToken` yourself).
+
+Here is a test - assuming you have CDI injections, which is the case with Arquillian, Meecrowave etc...:
+
+[source,java]
+----
+@SomethingToGetInjections
+public class DemoTest {
+    @Inject
+    private GeronimoJwtAuthExtension extension;
+
+    @Inject
+    private JwtParser parser;
+
+    @Test
+    void testJwtService() throws ServletException, IOException {
+        extension.execute(
+            () -> parser.createToken(
+                "my-raw-jwt",
+                Json.createObjectBuilder()
+                    .add("iss", "http://myissuer.com")
+                    .build()),
+            () -> {
+                // do test here
+            });
+    }
+}
+----
+
+TIP: if you use that a lot you will likely want to wrap it in a JUnit or TestNG extension.
