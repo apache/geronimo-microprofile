@@ -61,7 +61,8 @@ It provides a way to track JAX-RS calls (client and server) in a distributed sys
 ----
 
 == Full configuration  file
-The configuration file `opentracing.properties` should be placed in `META-INF/geronimo/microprofile/` folder
+
+This is a full configuration file example for geronimo opentracing impl
 
 [source,properties]
 ----
@@ -161,4 +162,3 @@ geronimo.opentracing.span.converter.zipkin.logger.active=true
 # Default true
 geronimo.opentracing.span.converter.zipkin.logger.wrapAsList=true
 ----
-
