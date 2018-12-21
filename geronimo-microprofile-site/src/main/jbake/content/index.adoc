@@ -41,3 +41,5 @@ you a one dependency Microprofile 2.0 server, ready to use:
   <type>pom</type>
 </dependency>
 ----
+
+WARNING: the 1.0.0 release binary has some versioning issues, ensure to evaluate the snapshot until we release next version please.

@@ -19,7 +19,6 @@ package org.apache.geronimo.microprofile.site;
 import static java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME;
 import static java.util.Arrays.asList;
 import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toList;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,9 +67,16 @@ public class Downloads {
         Stream.of("org/apache/geronimo/config/geronimo-config-impl", "org/apache/geronimo/safeguard/safeguard-impl",
                 "org/apache/geronimo/geronimo-jwt-auth", "org/apache/geronimo/geronimo-opentracing",
                 "org/apache/geronimo/geronimo-health", "org/apache/geronimo/geronimo-metrics",
-                "org/apache/geronimo/geronimo-openapi-impl").flatMap(Downloads::toVersions).map(v -> v.extensions("jar"))
-                .flatMap(Downloads::toDownloadable).parallel().map(Downloads::fillDownloadable).filter(Objects::nonNull)
+                "org/apache/geronimo/geronimo-openapi-impl", "org/apache/geronimo/geronimo-microprofile-aggregator")
+                .flatMap(Downloads::toVersions)
+                .map(v -> v.base.endsWith("geronimo-microprofile-aggregator") ? v.extensions("pom") : v.extensions("jar"))
+                .flatMap(Downloads::toDownloadable).map(Downloads::fillDownloadable).filter(Objects::nonNull)
                 .sorted((o1, o2) -> {
+                    final int formatComp = o2.format.compareTo(o1.format); // pom before jar
+                    if (formatComp != 0) {
+                        return formatComp;
+                    }
+
                     final int nameComp = o1.name.compareTo(o2.name);
                     if (nameComp != 0) {
                         return nameComp;
@@ -89,11 +95,11 @@ public class Downloads {
                     }
 
                     return o1.url.compareTo(o2.url);
-                }).peek(Downloads::printRow).collect(toList());
+                }).forEach(Downloads::printRow);
     }
 
     private static void printRow(final Download d) {
-        System.out.println("" + "|" + d.name.replace("Apache ", "") + (d.classifier.isEmpty() ? "" : (" " + d.classifier)) + "|"
+        System.out.println("|" + d.name.replace("Apache ", "") + (d.classifier.isEmpty() ? "" : (" " + d.classifier)) + "|"
                 + d.version + "|"
                 + new SimpleDateFormat("d MMM yyyy")
                         .format(Date.from(LocalDateTime.parse(d.date, RFC_1123_DATE_TIME).toInstant(ZoneOffset.UTC)))

@@ -63,9 +63,6 @@
             <configuration>
               <attach>true</attach>
               <classifier>all</classifier>
-              <libs>
-                <lib>${project.groupId}:geronimo-microprofile-aggregator:${project.version}:-:pom?transitive</lib>
-              </libs>
             </configuration>
           </execution>
         </executions>

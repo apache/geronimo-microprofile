@@ -158,6 +158,16 @@
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-rs-mp-client</artifactId>
       <version>3.2.7</version>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.annotation</groupId>
+          <artifactId>javax.annotation-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>javax.json</groupId>
+          <artifactId>javax.json-api</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- from now it is outside MP releases -->
@@ -207,11 +217,17 @@
       <groupId>org.eclipse.microprofile.openapi</groupId>
       <artifactId>microprofile-openapi-api</artifactId>
       <version>1.1-RC1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.osgi</groupId>
+          <artifactId>org.osgi.annotation.versioning</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.geronimo</groupId>
       <artifactId>geronimo-openapi-impl</artifactId>
-      <version>1.0.2</version>
+      <version>1.0.3-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
