@@ -2,29 +2,90 @@
 :jbake-date: 2018-07-24
 :icons: font
 
+
+== Last releases
+
+
 [.table.table-bordered,options="header"]
 |===
-
 |Name|Version|Date|Size|Type|Links
-
+|Geronimo Microprofile Aggregator|1.0.0|18 Dec 2018|7 kB |POM| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-microprofile-aggregator/1.0.0/geronimo-microprofile-aggregator-1.0.0.pom[icon:download[] POM] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-microprofile-aggregator/1.0.0/geronimo-microprofile-aggregator-1.0.0.pom.sha1[icon:download[] SHA1]
 |Geronimo Config|1.2.1|17 Dec 2018|70 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.2.1/geronimo-config-impl-1.2.1.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.2.1/geronimo-config-impl-1.2.1.jar.sha1[icon:download[] SHA1]
-|Geronimo Config|1.2|10 Jun 2018|70 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.2/geronimo-config-impl-1.2.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.2/geronimo-config-impl-1.2.jar.sha1[icon:download[] SHA1]
-|Geronimo Config|1.1|2 Jan 2018|59 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.1/geronimo-config-impl-1.1.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.1/geronimo-config-impl-1.1.jar.sha1[icon:download[] SHA1]
-|Geronimo Config|1.0|10 Sep 2017|53 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.0/geronimo-config-impl-1.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.0/geronimo-config-impl-1.0.jar.sha1[icon:download[] SHA1]
 |Geronimo Health|1.0.1|17 Dec 2018|13 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-health/1.0.1/geronimo-health-1.0.1.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-health/1.0.1/geronimo-health-1.0.1.jar.sha1[icon:download[] SHA1]
-|Geronimo Health|1.0.0|16 Jul 2018|19 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-health/1.0.0/geronimo-health-1.0.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-health/1.0.0/geronimo-health-1.0.0.jar.sha1[icon:download[] SHA1]
 |Geronimo Jwt Auth|1.0.1|17 Dec 2018|67 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-jwt-auth/1.0.1/geronimo-jwt-auth-1.0.1.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-jwt-auth/1.0.1/geronimo-jwt-auth-1.0.1.jar.sha1[icon:download[] SHA1]
-|Geronimo Jwt Auth|1.0.0|13 Jun 2018|67 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-jwt-auth/1.0.0/geronimo-jwt-auth-1.0.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-jwt-auth/1.0.0/geronimo-jwt-auth-1.0.0.jar.sha1[icon:download[] SHA1]
 |Geronimo Metrics|1.0.2|2 Jan 2019|36 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-metrics/1.0.2/geronimo-metrics-1.0.2.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-metrics/1.0.2/geronimo-metrics-1.0.2.jar.sha1[icon:download[] SHA1]
-|Geronimo Metrics|1.0.1|17 Dec 2018|36 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-metrics/1.0.1/geronimo-metrics-1.0.1.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-metrics/1.0.1/geronimo-metrics-1.0.1.jar.sha1[icon:download[] SHA1]
-|Geronimo Metrics|1.0.0|15 Jun 2018|73 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-metrics/1.0.0/geronimo-metrics-1.0.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-metrics/1.0.0/geronimo-metrics-1.0.0.jar.sha1[icon:download[] SHA1]
 |Geronimo Openapi|1.0.3|2 Jan 2019|169 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-openapi-impl/1.0.3/geronimo-openapi-impl-1.0.3.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-openapi-impl/1.0.3/geronimo-openapi-impl-1.0.3.jar.sha1[icon:download[] SHA1]
+|Geronimo Opentracing|1.0.1|17 Dec 2018|30 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-opentracing/1.0.1/geronimo-opentracing-1.0.1.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-opentracing/1.0.1/geronimo-opentracing-1.0.1.jar.sha1[icon:download[] SHA1]
+|Geronimo Safeguard|1.2.0|17 Dec 2018|117 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/safeguard/safeguard-impl/1.2.0/safeguard-impl-1.2.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/safeguard/safeguard-impl/1.2.0/safeguard-impl-1.2.0.jar.sha1[icon:download[] SHA1]
+|===
+
+== Previous releases
+
+
+=== Geronimo Safeguard
+
+
+[.table.table-bordered,options="header"]
+|===
+|Name|Version|Date|Size|Type|Links
+|Geronimo Safeguard|1.0|6 Jan 2018|64 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/safeguard/safeguard-impl/1.0/safeguard-impl-1.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/safeguard/safeguard-impl/1.0/safeguard-impl-1.0.jar.sha1[icon:download[] SHA1]
+|===
+
+=== Geronimo Jwt Auth
+
+
+[.table.table-bordered,options="header"]
+|===
+|Name|Version|Date|Size|Type|Links
+|Geronimo Jwt Auth|1.0.0|13 Jun 2018|67 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-jwt-auth/1.0.0/geronimo-jwt-auth-1.0.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-jwt-auth/1.0.0/geronimo-jwt-auth-1.0.0.jar.sha1[icon:download[] SHA1]
+|===
+
+=== Geronimo Health
+
+
+[.table.table-bordered,options="header"]
+|===
+|Name|Version|Date|Size|Type|Links
+|Geronimo Health|1.0.0|16 Jul 2018|19 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-health/1.0.0/geronimo-health-1.0.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-health/1.0.0/geronimo-health-1.0.0.jar.sha1[icon:download[] SHA1]
+|===
+
+=== Geronimo Openapi
+
+
+[.table.table-bordered,options="header"]
+|===
+|Name|Version|Date|Size|Type|Links
 |Geronimo Openapi|1.0.2|18 Dec 2018|169 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-openapi-impl/1.0.2/geronimo-openapi-impl-1.0.2.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-openapi-impl/1.0.2/geronimo-openapi-impl-1.0.2.jar.sha1[icon:download[] SHA1]
 |Geronimo Openapi|1.0.1|1 Aug 2018|157 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-openapi-impl/1.0.1/geronimo-openapi-impl-1.0.1.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-openapi-impl/1.0.1/geronimo-openapi-impl-1.0.1.jar.sha1[icon:download[] SHA1]
 |Geronimo Openapi|1.0.0|16 Jul 2018|157 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-openapi-impl/1.0.0/geronimo-openapi-impl-1.0.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-openapi-impl/1.0.0/geronimo-openapi-impl-1.0.0.jar.sha1[icon:download[] SHA1]
-|Geronimo Opentracing|1.0.1|17 Dec 2018|30 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-opentracing/1.0.1/geronimo-opentracing-1.0.1.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-opentracing/1.0.1/geronimo-opentracing-1.0.1.jar.sha1[icon:download[] SHA1]
-|Geronimo Opentracing|1.0.0|24 Jul 2018|87 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-opentracing/1.0.0/geronimo-opentracing-1.0.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-opentracing/1.0.0/geronimo-opentracing-1.0.0.jar.sha1[icon:download[] SHA1]
-|Geronimo Safeguard|1.2.0|17 Dec 2018|117 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/safeguard/safeguard-impl/1.2.0/safeguard-impl-1.2.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/safeguard/safeguard-impl/1.2.0/safeguard-impl-1.2.0.jar.sha1[icon:download[] SHA1]
-|Geronimo Safeguard|1.0|6 Jan 2018|64 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/safeguard/safeguard-impl/1.0/safeguard-impl-1.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/safeguard/safeguard-impl/1.0/safeguard-impl-1.0.jar.sha1[icon:download[] SHA1]
+|===
 
+=== Geronimo Metrics
+
+
+[.table.table-bordered,options="header"]
+|===
+|Name|Version|Date|Size|Type|Links
+|Geronimo Metrics|1.0.1|17 Dec 2018|36 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-metrics/1.0.1/geronimo-metrics-1.0.1.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-metrics/1.0.1/geronimo-metrics-1.0.1.jar.sha1[icon:download[] SHA1]
+|Geronimo Metrics|1.0.0|15 Jun 2018|73 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-metrics/1.0.0/geronimo-metrics-1.0.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-metrics/1.0.0/geronimo-metrics-1.0.0.jar.sha1[icon:download[] SHA1]
+|===
+
+=== Geronimo Config
+
+
+[.table.table-bordered,options="header"]
+|===
+|Name|Version|Date|Size|Type|Links
+|Geronimo Config|1.2|10 Jun 2018|70 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.2/geronimo-config-impl-1.2.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.2/geronimo-config-impl-1.2.jar.sha1[icon:download[] SHA1]
+|Geronimo Config|1.1|2 Jan 2018|59 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.1/geronimo-config-impl-1.1.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.1/geronimo-config-impl-1.1.jar.sha1[icon:download[] SHA1]
+|Geronimo Config|1.0|10 Sep 2017|53 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.0/geronimo-config-impl-1.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/config/geronimo-config-impl/1.0/geronimo-config-impl-1.0.jar.sha1[icon:download[] SHA1]
+|===
+
+=== Geronimo Opentracing
+
+
+[.table.table-bordered,options="header"]
+|===
+|Name|Version|Date|Size|Type|Links
+|Geronimo Opentracing|1.0.0|24 Jul 2018|87 kB |JAR| http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-opentracing/1.0.0/geronimo-opentracing-1.0.0.jar[icon:download[] JAR] http://repo.maven.apache.org/maven2/org/apache/geronimo/geronimo-opentracing/1.0.0/geronimo-opentracing-1.0.0.jar.sha1[icon:download[] SHA1]
 |===

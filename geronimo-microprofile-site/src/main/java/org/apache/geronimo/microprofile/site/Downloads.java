@@ -19,6 +19,10 @@ package org.apache.geronimo.microprofile.site;
 import static java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME;
 import static java.util.Arrays.asList;
 import static java.util.Optional.ofNullable;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,7 +34,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -70,38 +76,75 @@ public class Downloads {
 
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "512");
 
-        Stream.of("org/apache/geronimo/config/geronimo-config-impl", "org/apache/geronimo/safeguard/safeguard-impl",
+        final List<Download> downloads = Stream.of("org/apache/geronimo/config/geronimo-config-impl", "org/apache/geronimo/safeguard/safeguard-impl",
                 "org/apache/geronimo/geronimo-jwt-auth", "org/apache/geronimo/geronimo-opentracing",
                 "org/apache/geronimo/geronimo-health", "org/apache/geronimo/geronimo-metrics",
                 "org/apache/geronimo/geronimo-openapi-impl", "org/apache/geronimo/geronimo-microprofile-aggregator")
                 .flatMap(Downloads::toVersions)
                 .map(v -> v.base.endsWith("geronimo-microprofile-aggregator") ? v.extensions("pom") : v.extensions("jar"))
                 .flatMap(Downloads::toDownloadable).map(Downloads::fillDownloadable).filter(Objects::nonNull)
-                .sorted((o1, o2) -> {
-                    final int formatComp = o2.format.compareTo(o1.format); // pom before jar
-                    if (formatComp != 0) {
-                        return formatComp;
-                    }
+                .sorted(Downloads::versionComparator)
+                .map(Downloads::toCentral)
+                .collect(toList());
 
-                    final int nameComp = o1.name.compareTo(o2.name);
-                    if (nameComp != 0) {
-                        return nameComp;
-                    }
+        final Collection<Download> lastReleases = downloads.stream()
+                .collect(toMap(Download::getName, identity(), (a, b) -> a))
+                .values().stream()
+                .sorted(Downloads::versionComparator)
+                .collect(toList());
 
-                    final int versionComp = o2.version.compareTo(o1.version);
-                    if (versionComp != 0) {
-                        return versionComp;
-                    }
+        System.out.println("= Downloads\n:jbake-date: 2018-07-24\n:icons: font\n\n");
+        System.out.println("== Last releases\n\n");
+        System.out.println(tableHeader());
+        lastReleases.forEach(Downloads::printRow);
+        System.out.println(tableFooter());
+        System.out.println();
+        System.out.println("== Previous releases\n\n");
+        downloads.stream()
+                .filter(it -> !lastReleases.contains(it))
+                .collect(groupingBy(Download::getName))
+                .forEach((name, dls) -> {
+                    System.out.println("=== " + name + "\n\n");
+                    System.out.println(tableHeader());
+                    dls.forEach(Downloads::printRow);
+                    System.out.println(tableFooter());
+                    System.out.println();
+                });
+        System.out.println();
+    }
 
-                    final long dateComp = LocalDateTime.parse(o2.date, RFC_1123_DATE_TIME).toInstant(ZoneOffset.UTC)
-                            .toEpochMilli()
-                            - LocalDateTime.parse(o1.date, RFC_1123_DATE_TIME).toInstant(ZoneOffset.UTC).toEpochMilli();
-                    if (dateComp != 0) {
-                        return (int) dateComp;
-                    }
+    private static String tableFooter() {
+        return "|===";
+    }
 
-                    return o1.url.compareTo(o2.url);
-                }).map(Downloads::toCentral).forEach(Downloads::printRow);
+    private static String tableHeader() {
+        return "[.table.table-bordered,options=\"header\"]\n|===\n|Name|Version|Date|Size|Type|Links";
+    }
+
+    private static int versionComparator(final Download o1, final Download o2) {
+        final int formatComp = o2.format.compareTo(o1.format); // pom before jar
+        if (formatComp != 0) {
+            return formatComp;
+        }
+
+        final int nameComp = o1.name.compareTo(o2.name);
+        if (nameComp != 0) {
+            return nameComp;
+        }
+
+        final int versionComp = o2.version.compareTo(o1.version);
+        if (versionComp != 0) {
+            return versionComp;
+        }
+
+        final long dateComp = LocalDateTime.parse(o2.date, RFC_1123_DATE_TIME).toInstant(ZoneOffset.UTC)
+                .toEpochMilli()
+                - LocalDateTime.parse(o1.date, RFC_1123_DATE_TIME).toInstant(ZoneOffset.UTC).toEpochMilli();
+        if (dateComp != 0) {
+            return (int) dateComp;
+        }
+
+        return o1.url.compareTo(o2.url);
     }
 
     private static Download toCentral(final Download download) {
