@@ -4,7 +4,9 @@
 
     <div id="footer">
       <div class="container">
-        <p class="muted credit">&copy; 2018 | Apache Geronimo</p>
+        Copyright &copy; 1999-2019 The Apache Software Foundation, Licensed under the Apache License, Version 2.0.
+        Apache Geronimo, Geronimo, Apache, the Apache feather logo, and the Apache Geronimo project logo are trademarks of
+        The Apache Software Foundation. All other marks mentioned may be trademarks or registered trademarks of their respective owners.
       </div>
     </div>
 

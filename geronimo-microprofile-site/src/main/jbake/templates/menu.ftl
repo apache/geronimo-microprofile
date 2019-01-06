@@ -6,6 +6,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="http://www.apache.org/">Apache</a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="modules">Modules <span class="caret"></span></a>
           <div class="dropdown-menu" aria-labelledby="modules">
@@ -24,6 +27,16 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" href="downloads.html">Downloads</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="asf-links">ASF <span class="caret"></span></a>
+          <div class="dropdown-menu" aria-labelledby="asf-links">
+            <a class="dropdown-item" href="http://www.apache.org/licenses/">License</a>
+            <a class="dropdown-item" href="http://www.apache.org/foundation/sponsorship.html">Sponsorship</a>
+            <a class="dropdown-item" href="http://www.apache.org/foundation/thanks.html">Thanks</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="http://www.apache.org/security/">Security</a>
+          </div>
         </li>
       </ul>
     </div>
