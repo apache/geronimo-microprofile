@@ -30,6 +30,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -47,6 +48,10 @@ public class Downloads {
 
     private static final SAXParserFactory FACTORY = SAXParserFactory.newInstance();
 
+    // always available once the release passed compared to central
+    private static final String ASF_BASE = "https://repository.apache.org/content/repositories/releases/";
+
+    // the entry point we want on the download page
     private static final String MVN_BASE = "http://repo.maven.apache.org/maven2/";
 
     private static final long KILO_RATION = 1024;
@@ -61,6 +66,7 @@ public class Downloads {
     }
 
     public static void main(final String[] args) {
+        Locale.setDefault(Locale.ENGLISH);
 
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "512");
 
@@ -95,11 +101,39 @@ public class Downloads {
                     }
 
                     return o1.url.compareTo(o2.url);
-                }).forEach(Downloads::printRow);
+                }).map(Downloads::toCentral).forEach(Downloads::printRow);
+    }
+
+    private static Download toCentral(final Download download) {
+        final Download dl = new Download(
+                normalizeName(download.name),
+                download.classifier,
+                download.version,
+                download.format,
+                download.url.replace(ASF_BASE, MVN_BASE),
+                download.sha1.replace(ASF_BASE, MVN_BASE),
+                download.asc.replace(ASF_BASE, MVN_BASE));
+        dl.date = download.date;
+        dl.size = download.size;
+        return dl;
+    }
+
+    private static String normalizeName(final String name) {
+        String out = name;
+        if (out.startsWith("Apache ")) {
+            out = out.substring("Apache ".length());
+        }
+        if (!out.startsWith("Geronimo")) {
+            out = "Geronimo " + out;
+        }
+        if (out.endsWith(" Impl")) {
+            out = out.substring(0, out.length() - " Impl".length());
+        }
+        return out;
     }
 
     private static void printRow(final Download d) {
-        System.out.println("|" + d.name.replace("Apache ", "") + (d.classifier.isEmpty() ? "" : (" " + d.classifier)) + "|"
+        System.out.println("|" + d.name + (d.classifier.isEmpty() ? "" : (" " + d.classifier)) + "|"
                 + d.version + "|"
                 + new SimpleDateFormat("d MMM yyyy")
                         .format(Date.from(LocalDateTime.parse(d.date, RFC_1123_DATE_TIME).toInstant(ZoneOffset.UTC)))
@@ -153,13 +187,13 @@ public class Downloads {
     private static Download toDownload(final String artifactId, final String classifier, final String version,
             final String format, final String url) {
         return new Download(
-                WordUtils.capitalize(artifactId.replace('-', ' ')).replace("Openejb", "OpenEJB").replace("Tomee", "TomEE"),
+                WordUtils.capitalize(artifactId.replace('-', ' ')),
                 classifier, version, format, url, url + ".sha1", url + ".asc");
     }
 
     private static Stream<Version> toVersions(final String baseUrl) {
         final QuickMvnMetadataParser handler = new QuickMvnMetadataParser();
-        final String base = MVN_BASE + baseUrl;
+        final String base = ASF_BASE + baseUrl;
         try (final InputStream stream = new URL(base + "/maven-metadata.xml").openStream()) {
             final SAXParser parser = FACTORY.newSAXParser();
             parser.parse(stream, handler);
