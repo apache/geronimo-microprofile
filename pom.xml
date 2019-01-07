@@ -33,10 +33,15 @@
     Apache Geronimo aggregator for Microprofile Specification
   </description>
 
+  <properties>
+    <meecrowave.version>1.2.4</meecrowave.version>
+  </properties>
+
   <modules>
     <module>geronimo-microprofile-aggregator</module>
     <module>utilda</module>
     <module>geronimo-microprofile-site</module>
+    <module>geronimo-microprofile-reporter</module>
   </modules>
 
   <scm>
@@ -55,6 +60,18 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <archive combine.children="append">
+            <manifestEntries>
+              <Automatic-Module-Name>${geronimo-microprofile.Automatic-Module-Name}</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
         </configuration>
       </plugin>
     </plugins>

@@ -1,0 +1,187 @@
+/**
+* Licensed to the Apache Software Foundation (ASF) under one or more
+* contributor license agreements. See the NOTICE file distributed with
+* this work for additional information regarding copyright ownership.
+* The ASF licenses this file to You under the Apache License, Version 2.0
+* (the "License"); you may not use this file except in compliance with
+* the License. You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+<h1>Timer @escape($name) (@escape($unit))</h1>
+
+@if($message,inline:<div class="error">@escape($message)</div>)
+
+<h2>Count</h2>
+<canvas id="timer-count-chart" height="100"></canvas>
+
+<h2>Rates</h2>
+<canvas id="timer-rates-chart" height="100"></canvas>
+
+<h2>Histogram</h2>
+<canvas id="timer-histogram-chart" height="100"></canvas>
+
+/* TODO: make it composed of meter and histogram instead of duplicating it */
+@include(chartsjs.html)
+<script>
+var options = {
+  fill: false,
+  responsive: true,
+  maintainAspectRatio: true,
+  scales: {
+    xAxes: [{
+      type: 'time',
+      distribution : 'series',
+      display: true,
+      scaleLabel: {
+        display: true,
+        labelString: 'Date',
+      }
+    }],
+    yAxes: [{
+      display: true,
+      scaleLabel: {
+        display: true,
+        labelString: '$name',
+      }
+    }]
+  }
+};
+var labels = [ @each($points,inline:new Date($$value.timestamp).toLocaleString()@if($hasNext,inline:,)) ];
+new Chart(document.getElementById('timer-count-chart').getContext('2d'), {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: 'count',
+      data: [ @each($points,inline:{t:$$value.timestamp,y:$$value.value.meter.count}@if($hasNext,inline:,)) ],
+      borderWidth: 1,
+      options: options
+    }]
+  }
+});
+new Chart(document.getElementById('timer-rates-chart').getContext('2d'), {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: 'mean',
+      data: [ @each($points,inline:{t:$$value.timestamp,y:$$value.value.meter.rateMean}@if($hasNext,inline:,)) ],
+      borderWidth: 1,
+      options: options,
+      backgroundColor: '#000',
+      borderColor: '#000',
+      fill: false
+    },{
+      label: '1 mn',
+      data: [ @each($points,inline:{t:$$value.timestamp,y:$$value.value.meter.rate1}@if($hasNext,inline:,)) ],
+      borderWidth: 1,
+      options: options,
+      backgroundColor: '#339',
+      borderColor: '#339',
+      fill: false
+    },{
+      label: '5 mn',
+      data: [ @each($points,inline:{t:$$value.timestamp,y:$$value.value.meter.rate5}@if($hasNext,inline:,)) ],
+      borderWidth: 1,
+      options: options,
+      backgroundColor: '#06f',
+      borderColor: '#06f',
+      fill: false
+    },{
+      label: '15 mn',
+      data: [ @each($points,inline:{t:$$value.timestamp,y:$$value.value.meter.rate15}@if($hasNext,inline:,)) ],
+      borderWidth: 1,
+      options: options,
+      backgroundColor: '#f00',
+      borderColor: '#f00',
+      fill: false
+    }]
+  }
+});
+new Chart(document.getElementById('timer-histogram-chart').getContext('2d'), {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: 'median',
+      data: [ @each($points,inline:{t:$$value.timestamp,y:$$value.value.histogram.median}@if($hasNext,inline:,)) ],
+      borderWidth: 1,
+      options: options,
+      backgroundColor: '#339',
+      borderColor: '#339',
+      fill: false
+    },{
+      label: 'mean',
+      data: [ @each($points,inline:{t:$$value.timestamp,y:$$value.value.histogram.mean}@if($hasNext,inline:,)) ],
+      borderWidth: 1,
+      options: options,
+      backgroundColor: '#000',
+      borderColor: '#000',
+      fill: false
+    },{
+      label: 'min',
+      data: [ @each($points,inline:{t:$$value.timestamp,y:$$value.value.histogram.max}@if($hasNext,inline:,)) ],
+      borderWidth: 1,
+      options: options,
+      backgroundColor: '#06f',
+      borderColor: '#06f',
+      fill: false
+    },{
+      label: 'max',
+      data: [ @each($points,inline:{t:$$value.timestamp,y:$$value.value.histogram.min}@if($hasNext,inline:,)) ],
+      borderWidth: 1,
+      options: options,
+      backgroundColor: '#f00',
+      borderColor: '#f00',
+      fill: false
+    },{
+      label: '75th pc',
+      data: [ @each($points,inline:{t:$$value.timestamp,y:$$value.value.histogram.75thPercentile}@if($hasNext,inline:,)) ],
+      borderWidth: 1,
+      options: options,
+      backgroundColor: '#f99',
+      borderColor: '#f99',
+      fill: false
+    },{
+      label: '95th pc',
+      data: [ @each($points,inline:{t:$$value.timestamp,y:$$value.value.histogram.95thPercentile}@if($hasNext,inline:,)) ],
+      borderWidth: 1,
+      options: options,
+      backgroundColor: '#f96',
+      borderColor: '#f96',
+      fill: false
+    },{
+      label: '98th pc',
+      data: [ @each($points,inline:{t:$$value.timestamp,y:$$value.value.histogram.98thPercentile}@if($hasNext,inline:,)) ],
+      borderWidth: 1,
+      options: options,
+      backgroundColor: '#f93',
+      borderColor: '#f93',
+      fill: false
+    },{
+      label: '99th pc',
+      data: [ @each($points,inline:{t:$$value.timestamp,y:$$value.value.histogram.99thPercentile}@if($hasNext,inline:,)) ],
+      borderWidth: 1,
+      options: options,
+      backgroundColor: '#f30',
+      borderColor: '#f30',
+      fill: false
+    },{
+      label: '999th pc',
+      data: [ @each($points,inline:{t:$$value.timestamp,y:$$value.value.histogram.999thPercentile}@if($hasNext,inline:,)) ],
+      borderWidth: 1,
+      options: options,
+      backgroundColor: '#c00',
+      borderColor: '#c00',
+      fill: false
+    }]
+  }
+});
+</script>

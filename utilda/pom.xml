@@ -29,8 +29,8 @@
   <description>A Microprofile server based on Meecrowave. utilda means micro-wave (tilda).</description>
 
   <properties>
-    <meecrowave.version>1.2.4</meecrowave.version>
     <microprofile.platform.version>2.0</microprofile.platform.version>
+    <geronimo-microprofile.Automatic-Module-Name>${project.groupId}.microprofile.utilda</geronimo-microprofile.Automatic-Module-Name>
   </properties>
 
   <dependencies>

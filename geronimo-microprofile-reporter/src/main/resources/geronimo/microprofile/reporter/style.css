@@ -1,0 +1,66 @@
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+html, body {
+  padding: 0;
+  margin: 0;
+}
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+header {
+  background-color: $colors.main;
+  color: white;
+  font-size: 15px;
+  font-size: 20px;
+  padding: 8px;
+}
+header > span > a {
+  color: white;
+  text-decoration: none;
+}
+
+.container {
+  padding: 1rem;
+}
+
+.error {
+  color: red;
+}
+
+table, th, td {
+  border: 1px solid $colors.main;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+.tile {
+  background-color: white;
+  border: 1px solid $colors.main;
+  color: $colors.main;
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+.tile > a {
+  text-decoration: none;
+  color: $colors.main;
+}
+.tile > a:hover, .tile:hover > a {
+  color: $colors.hover;
+}

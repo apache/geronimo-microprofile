@@ -26,6 +26,10 @@
   <artifactId>geronimo-microprofile-site</artifactId>
   <name>Geronimo Microprofile :: Site Generator</name>
 
+  <properties>
+    <geronimo-microprofile.Automatic-Module-Name>${project.groupId}.microprofile.site</geronimo-microprofile.Automatic-Module-Name>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.geronimo.specs</groupId>

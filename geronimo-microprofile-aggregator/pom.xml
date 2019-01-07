@@ -30,6 +30,7 @@
 
   <properties>
     <microprofile.platform.version>1.4</microprofile.platform.version>
+    <geronimo-microprofile.Automatic-Module-Name>${project.groupId}.microprofile.aggregator</geronimo-microprofile.Automatic-Module-Name>
   </properties>
 
   <dependencies>
