@@ -1,0 +1,24 @@
+= Apache Geronimo Reporter
+:jbake-date: 2019-01-07
+:icons: font
+
+Apache Geronimo Microprofile Reporter allows to visualize spans (OpenTracing) and Metrics
+in a small webapp.
+
+IMPORTANT: this is for test and demo purposes, this is not yet intended to be deployed in production.
+
+== Dependencies
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.apache.geronimo</groupId>
+  <artifactId>geronimo-microprofile-reporter</artifactId>
+  <version>${geronimo-microprofile.version}</version>
+</dependency>
+----
+
+== Usage
+
+Just add the module in your web application and connect on `/geronimo/microprofile/reporter` - or prefixes
+with the JAX-RS application path if you use any.

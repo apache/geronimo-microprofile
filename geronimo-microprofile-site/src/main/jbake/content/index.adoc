@@ -29,6 +29,8 @@ Note we also provide some pom aggregator to import all the stack at once:
 </dependency>
 ----
 
+If you want to investigate your Microprofile setup you can also play with our reporter link:reporter.html[UI/webapp].
+
 Finally we provide μ~ (utilda) which is a pom with link:http://openwebbeans.apache.org/meecrowave/[Apache Meecrowave] and the Aggregator pom which makes
 you a one dependency Microprofile 2.0 server, ready to use:
 
