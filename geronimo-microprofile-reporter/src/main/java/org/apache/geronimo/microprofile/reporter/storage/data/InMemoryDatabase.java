@@ -29,10 +29,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 // copy of metrics Histogram impl
 public class InMemoryDatabase<T> {
-    private static final double ALPHA = Double.parseDouble(System.getProperty("geronimo.reporter.storage.alpha", "0.015"));
-
-    private static final int BUCKET_SIZE = Integer.getInteger("geronimo.reporter.storage.size", 12 /* one point/5s */ * 60 * 60);
-
     private static final long REFRESH_INTERVAL = TimeUnit.HOURS.toNanos(1);
 
     private final String unit;
@@ -43,12 +39,17 @@ public class InMemoryDatabase<T> {
 
     private final AtomicLong nextRefreshTime = new AtomicLong(System.nanoTime() + REFRESH_INTERVAL);
 
+    private final double alpha;
+    private final int bucketSize;
+
     private volatile long startTime = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
 
     private final ConcurrentSkipListMap<Double, Value<T>> bucket = new ConcurrentSkipListMap<>();
 
-    public InMemoryDatabase(final String unit) {
+    public InMemoryDatabase(final double alpha, final int bucketSize, final String unit) {
         this.unit = unit;
+        this.alpha = alpha;
+        this.bucketSize = bucketSize;
     }
 
     public String getUnit() {
@@ -73,11 +74,11 @@ public class InMemoryDatabase<T> {
         final Lock lock = this.lock.readLock();
         lock.lock();
         try {
-            final Value<T> sample = new Value<>(value, now, Math.exp(ALPHA * (TimeUnit.MILLISECONDS.toSeconds(now) - startTime)));
+            final Value<T> sample = new Value<>(value, now, Math.exp(alpha * (TimeUnit.MILLISECONDS.toSeconds(now) - startTime)));
             final double priority = sample.weight / Math.random();
 
             final long size = count.incrementAndGet();
-            if (size <= BUCKET_SIZE) {
+            if (size <= bucketSize) {
                 bucket.put(priority, sample);
             } else { // iterate through the bucket until we need removing low priority entries to get a new space
                 double first = bucket.firstKey();
@@ -105,7 +106,7 @@ public class InMemoryDatabase<T> {
             if (nextRefreshTime.compareAndSet(next, now + REFRESH_INTERVAL)) {
                 final long oldStartTime = startTime;
                 startTime = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-                final double updateFactor = Math.exp(-ALPHA * (startTime - oldStartTime));
+                final double updateFactor = Math.exp(-alpha * (startTime - oldStartTime));
                 if (updateFactor != 0.) {
                     bucket.putAll(new ArrayList<>(bucket.keySet()).stream().collect(toMap(k -> k * updateFactor, k -> {
                         final Value<T> previous = bucket.remove(k);

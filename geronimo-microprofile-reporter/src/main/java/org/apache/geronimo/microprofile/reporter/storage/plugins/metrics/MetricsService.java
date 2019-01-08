@@ -105,7 +105,8 @@ public class MetricsService {
                                           final String key) {
         InMemoryDatabase<T> db = registry.get(virtualName);
         if (db == null) {
-            db = new InMemoryDatabase<>(ofNullable(source.getMetadata().get(key).getUnit()).orElse(""));
+            db = new InMemoryDatabase<>(database.getAlpha(), database.getBucketSize(),
+                    ofNullable(source.getMetadata().get(key).getUnit()).orElse(""));
             final InMemoryDatabase<T> existing = registry.putIfAbsent(virtualName, db);
             if (existing != null) {
                 db = existing;

@@ -20,25 +20,49 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Destroyed;
 import javax.enterprise.event.Observes;
+import javax.inject.Inject;
 
 import org.apache.geronimo.microprofile.reporter.storage.plugins.health.CheckSnapshot;
 import org.apache.geronimo.microprofile.reporter.storage.plugins.metrics.MeterSnapshot;
 import org.apache.geronimo.microprofile.reporter.storage.plugins.metrics.SnapshotStat;
 import org.apache.geronimo.microprofile.reporter.storage.plugins.metrics.TimerSnapshot;
 import org.apache.geronimo.microprofile.reporter.storage.plugins.tracing.SpanEntry;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
 public class MicroprofileDatabase {
-    private final InMemoryDatabase<SpanEntry> spanDatabase = new InMemoryDatabase<>("none");
+    @Inject
+    @ConfigProperty(name = "geronimo.reporter.storage.alpha", defaultValue = "0.015")
+    private Double alpha;
+
+    @Inject
+    @ConfigProperty(name = "geronimo.reporter.storage.size", defaultValue = "43200" /*each 5s*/)
+    private Integer bucketSize;
+
+    private InMemoryDatabase<SpanEntry> spanDatabase;
     private final Map<String, InMemoryDatabase<Long>> counters = new HashMap<>();
     private final Map<String, InMemoryDatabase<Double>> gauges = new HashMap<>();
     private final Map<String, InMemoryDatabase<SnapshotStat>> histograms = new HashMap<>();
     private final Map<String, InMemoryDatabase<MeterSnapshot>> meters = new HashMap<>();
     private final Map<String, InMemoryDatabase<TimerSnapshot>> timers = new HashMap<>();
     private final Map<String, InMemoryDatabase<CheckSnapshot>> checks = new HashMap<>();
+
+    @PostConstruct
+    private void init() {
+        spanDatabase = new InMemoryDatabase<>(alpha, bucketSize,"none");
+    }
+
+    public Double getAlpha() {
+        return alpha;
+    }
+
+    public Integer getBucketSize() {
+        return bucketSize;
+    }
 
     public InMemoryDatabase<SpanEntry> getSpans() {
         return spanDatabase;

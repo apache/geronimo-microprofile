@@ -59,7 +59,7 @@ public class HealthService {
         final String name = healthCheckResponse.getName();
         InMemoryDatabase<CheckSnapshot> db = database.getChecks().get(name);
         if (db == null) {
-            db = new InMemoryDatabase<>("check");
+            db = new InMemoryDatabase<>(database.getAlpha(), database.getBucketSize(), "check");
             final InMemoryDatabase<CheckSnapshot> existing = database.getChecks().putIfAbsent(name, db);
             if (existing != null) {
                 db = existing;
