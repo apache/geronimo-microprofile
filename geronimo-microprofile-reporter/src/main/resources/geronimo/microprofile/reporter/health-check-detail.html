@@ -14,6 +14,23 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-<div class="tile @attributify($$value)">
-  <a href="@attributify($$value)">$$value</a>
+<h1>Health Check @escape($name) at @escape($lastCheckTimestamp)</h1>
+
+@if($message,inline:<div class="error">@escape($message)</div>)
+
+<div>
+  <h2>State</h2>
+  <div class="health-check-state health-check-@lowercase($lastCheck.state)">
+    <span>$lastCheck.state</span>
+  </div>
+
+  <h2>Data</h2>
+  <table>
+    <thead>
+      <tr><th>Name</th><th>Value</th></tr>
+    </thead>
+    <tbody>
+      @each($lastCheck.data,inline:<tr><td>$$value.key</td><td>$$value.value</td></tr>)
+    </tbody>
+  </table>
 </div>

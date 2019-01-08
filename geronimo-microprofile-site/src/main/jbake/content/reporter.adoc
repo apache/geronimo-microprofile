@@ -16,6 +16,11 @@ IMPORTANT: this is for test and demo purposes, this is not yet intended to be de
   <artifactId>geronimo-microprofile-reporter</artifactId>
   <version>${geronimo-microprofile.version}</version>
 </dependency>
+<dependency> <!-- to have chart pages -->
+  <groupId>org.webjars.bower</groupId>
+  <artifactId>chart.js</artifactId>
+  <version>2.7.3</version>
+</dependency>
 ----
 
 == Usage

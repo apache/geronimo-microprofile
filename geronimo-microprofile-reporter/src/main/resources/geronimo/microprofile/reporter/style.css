@@ -64,3 +64,20 @@ table, th, td {
 .tile > a:hover, .tile:hover > a {
   color: $colors.hover;
 }
+
+.health-check-state {
+  width: 100%;
+  height: 50px;
+  color: white;
+  font-weight: bolder;
+  display: flex;
+}
+.health-check-state > span {
+  margin: auto;
+}
+.health-check-up {
+  background-color: green;
+}
+.health-check-down {
+  background-color: red;
+}

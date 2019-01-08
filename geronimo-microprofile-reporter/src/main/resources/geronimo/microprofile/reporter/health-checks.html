@@ -14,6 +14,16 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-<div class="tile @attributify($$value)">
-  <a href="@attributify($$value)">$$value</a>
+<h1>Health Checks</h1>
+
+<div>
+    See the application global instantaneous state <a href="health-application">here</a>.
+</div>
+<div>
+    <span>Select a particular check to visualize:</span>
+    <form action="check" method="get">
+        <input list="check" name="check">
+        <datalist id="check">@each($checks,datalist-option.html)</datalist>
+        <input type="submit">
+    </form>
 </div>

@@ -1,0 +1,67 @@
+/**
+* Licensed to the Apache Software Foundation (ASF) under one or more
+* contributor license agreements. See the NOTICE file distributed with
+* this work for additional information regarding copyright ownership.
+* The ASF licenses this file to You under the Apache License, Version 2.0
+* (the "License"); you may not use this file except in compliance with
+* the License. You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+<h1>Health Check @escape($name)</h1>
+
+@if($message,inline:<div class="error">@escape($message)</div>)
+
+<div>
+  <div>See health check <a href="health-check-detail?check=@url($name)">last</a> status detail.</div>
+  <canvas id="check-chart" height="50"></canvas>
+</div>
+
+
+@include(chartsjs.html)
+<script>
+new Chart(document.getElementById('check-chart').getContext('2d'), {
+  type: 'line',
+  data: {
+    xLabels: [ @each($points,inline:new Date($$value.timestamp).toLocaleString()@if($hasNext,inline:,)) ],
+    yLabels: [ 'UP', 'DOWN' ],
+    datasets: [{
+      label: '$name',
+      data: [ @each($points,inline:'$$value.value.state'@if($hasNext,inline:,)) ],
+      steppedLine: true,
+      fill: true
+    }]
+  },
+  options: {
+    responsive: true,
+    title: {
+      display: true,
+      text: '$name'
+    },
+    scales: {
+      xAxes: [{
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Date'
+        }
+      }],
+      yAxes: [{
+        type: 'category',
+        position: 'left',
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'State'
+        }
+      }]
+    }
+  }
+});
+</script>

@@ -20,6 +20,7 @@ import static java.util.stream.Collectors.toMap;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -55,12 +56,12 @@ public class InMemoryDatabase<T> {
         return unit;
     }
 
-    public Collection<Value<T>> snapshot() {
+    public LinkedList<Value<T>> snapshot() {
         ensureUpToDate();
         final Lock lock = this.lock.readLock();
         lock.lock();
         try {
-            return new ArrayList<>(bucket.values());
+            return new LinkedList<>(bucket.values());
         } finally {
             lock.unlock();
         }

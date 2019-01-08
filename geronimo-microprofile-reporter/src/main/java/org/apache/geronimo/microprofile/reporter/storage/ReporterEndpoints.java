@@ -17,19 +17,34 @@
 package org.apache.geronimo.microprofile.reporter.storage;
 
 import static java.util.Arrays.asList;
+import static java.util.Comparator.comparing;
+import static java.util.Objects.requireNonNull;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static javax.ws.rs.core.MediaType.TEXT_HTML;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.TreeSet;
+import java.util.stream.Stream;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.metrics.Snapshot;
 
 import io.opentracing.Span;
@@ -46,19 +61,59 @@ public class ReporterEndpoints {
     @Inject
     private SpanMapper spanMapper;
 
+    @Inject
+    private HealthRegistry healthRegistry;
+
+    private String chartJs;
+
+    @PostConstruct
+    private void init() {
+        // we load chart.js like that to enable to override it easily and respect our relative path properly
+        final String chartJsResource = System.getProperty( // don't use mp-config, it is optional
+                "geronimo.microprofile.reporter.chartjs.resources",
+                "/META-INF/resources/webjars/chart.js/2.7.3/dist/Chart.bundle.min.js");
+        final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        chartJs = (chartJsResource.startsWith("/") ?
+                Stream.of(chartJsResource, chartJsResource.substring(1)) : Stream.of(chartJsResource, '/' + chartJsResource))
+                .map(it -> {
+                    final InputStream stream = loader.getResourceAsStream(it);
+                    if (stream == null) {
+                        return null;
+                    }
+                    try (final BufferedReader reader = new BufferedReader(new InputStreamReader(
+                            requireNonNull(stream,
+                                    "Chart.js bundle not found")))) {
+                        return reader.lines().collect(joining("\n"));
+                    } catch (final IOException e) {
+                        throw new IllegalStateException("Didn't find chart.js bundle");
+                    }
+                })
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("No " + chartJsResource + " found, did you add org.webjars.bower:chart.js:2.7.3 to your classpath?"));
+
+    }
+
     @GET
     public Html get() {
         return new Html("main.html")
                 .with("view", "index.html")
                 .with("colors", COLORS)
                 .with("title", "Home")
-                .with("tiles", asList("Spans", "Counters", "Gauges", "Histograms", "Meters", "Timers"));
+                .with("tiles", asList("Spans", "Counters", "Gauges", "Histograms", "Meters", "Timers", "Health Checks"));
     }
 
     @GET
     @Path("index.html") // we are too used to that to not provide it
     public Html getIndex() {
         return get();
+    }
+
+    @GET
+    @Path("Chart.bundle.min.js")
+    @Produces("application/javascript")
+    public String getChartJsBundle() {
+        return chartJs;
     }
 
     @GET
@@ -209,6 +264,63 @@ public class ReporterEndpoints {
                 .with("colors", COLORS)
                 .with("title", "Span")
                 .with("span", value);
+    }
+
+    @GET
+    @Path("health-checks")
+    public Html getHealths() {
+        return new Html("main.html")
+                .with("view", "health-checks.html")
+                .with("colors", COLORS)
+                .with("title", "Health Checks")
+                .with("checks", new TreeSet<>(database.getChecks().keySet()));
+    }
+
+    @GET
+    @Path("check")
+    public Html getHealth(@QueryParam("check") final String name) {
+        final InMemoryDatabase<MicroprofileDatabase.CheckSnapshot> db = database.getChecks().get(name);
+        return new Html("main.html")
+                .with("view", "health.html")
+                .with("colors", COLORS)
+                .with("title", "Health Check")
+                .with("name", name)
+                .with("message", db == null ? "No matching check for name '" + name + "'" : null)
+                .with("points", db == null ? null : db.snapshot().stream().map(Point::new).collect(toList()));
+    }
+
+    @GET
+    @Path("health-check-detail")
+    public Html getHealthCheckDetail(@QueryParam("check") final String name) {
+        final InMemoryDatabase.Value<MicroprofileDatabase.CheckSnapshot> last = ofNullable(database.getChecks().get(name))
+                .map(InMemoryDatabase::snapshot)
+                .map(it -> it.isEmpty() ? null : it.getLast())
+                .orElse(null); // todo: orElseGet -> call them all and filter per name?
+        return new Html("main.html")
+                .with("view", "health-check-detail.html")
+                .with("colors", COLORS)
+                .with("title", "Health Check")
+                .with("name", name)
+                .with("message", last == null ? "No matching check yet for name '" + name + "'" : null)
+                .with("lastCheckTimestamp", last == null ? null : new Date(last.getTimestamp()))
+                .with("lastCheck", last == null ? null : last.getValue());
+    }
+
+    @GET
+    @Path("health-application")
+    public Html getApplicationHealth() {
+        final List<HealthCheckResponse> checks = healthRegistry.doCheck()
+               .sorted(comparing(HealthCheckResponse::getName))
+               .collect(toList());
+        final boolean stateOk = checks.stream()
+                                   .noneMatch(it -> it.getState().equals(HealthCheckResponse.State.DOWN));
+        return new Html("main.html")
+                .with("view", "health-application.html")
+                .with("colors", COLORS)
+                .with("title", "Application Health")
+                .with("globalStateOk", stateOk)
+                .with("globalStateKo", !stateOk)
+                .with("checks", checks);
     }
 
     public static class Point<T> {

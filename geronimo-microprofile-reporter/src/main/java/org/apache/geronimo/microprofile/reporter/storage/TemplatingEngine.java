@@ -19,10 +19,12 @@ package org.apache.geronimo.microprofile.reporter.storage;
 import static java.util.Locale.ROOT;
 import static java.util.stream.Collectors.joining;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -139,41 +141,20 @@ public class TemplatingEngine {
                     return compileIfNeeded(templateLoader.apply(templatePath), templateLoader).apply(includeData);
                 });
             } else if (substring.startsWith("@escape(")) {
-                final String value = builder.toString();
-                segments.add(data -> value);
-                builder.setLength(0);
-
-                final int end = findEndingParenthesis(chars, i + "@escape(".length() + 1);
-                if (end < 0) {
-                    throw new IllegalArgumentException("Missing ')' token for @escape at position " + i + " for:\n" + template);
-                }
-                final String toEscape = template.substring(i + "@escape(".length(), end);
-                i = end;
-                segments.add(data -> {
-                    final String escapableValue = compileIfNeeded(toEscape, templateLoader).apply(data);
-                    if (escapableValue == null) {
-                        return "";
+                i = handleFn("escape", template, templateLoader, segments, builder, chars, i, templateHelper::escape);
+            } else if (substring.startsWith("@attributify(")) {
+                i = handleFn("attributify", template, templateLoader, segments, builder, chars, i,
+                        v -> v.toLowerCase(ROOT).replace(' ', '-'));
+            } else if (substring.startsWith("@url(")) {
+                i = handleFn("url", template, templateLoader, segments, builder, chars, i, v -> {
+                    try {
+                        return URLEncoder.encode(v, "UTF-8");
+                    } catch (final UnsupportedEncodingException e) {
+                        throw new IllegalStateException(e);
                     }
-                    return templateHelper.escape(escapableValue);
                 });
             } else if (substring.startsWith("@lowercase(")) {
-                final String value = builder.toString();
-                segments.add(data -> value);
-                builder.setLength(0);
-
-                final int end = findEndingParenthesis(chars, i + "@lowercase(".length() + 1);
-                if (end < 0) {
-                    throw new IllegalArgumentException("Missing ')' token for @lowercase at position " + i + " for:\n" + template);
-                }
-                final String toEscape = template.substring(i + "@lowercase(".length(), end);
-                i = end;
-                segments.add(data -> {
-                    final String escapableValue = compileIfNeeded(toEscape, templateLoader).apply(data);
-                    if (escapableValue == null) {
-                        return "";
-                    }
-                    return escapableValue.toLowerCase(ROOT);
-                });
+                i = handleFn("lowercase", template, templateLoader, segments, builder, chars, i, v -> v.toLowerCase(ROOT));
             } else if (substring.startsWith("@each(")) {
                 final String value = builder.toString();
                 segments.add(ctx -> value);
@@ -279,6 +260,28 @@ public class TemplatingEngine {
         }
 
         return segments;
+    }
+
+    private int handleFn(final String name, final String template, final Function<String, String> templateLoader,
+                         final Collection<Function<Object, String>> segments, final StringBuilder builder,
+                         final char[] chars, final int currentIndex, final Function<String, String> impl) {
+        final String value = builder.toString();
+        segments.add(data -> value);
+        builder.setLength(0);
+
+        final int end = findEndingParenthesis(chars, currentIndex + name .length() + 2 /*@ and (*/ + 1);
+        if (end < 0) {
+            throw new IllegalArgumentException("Missing ')' token for @" + name + " at position " + currentIndex + " for:\n" + template);
+        }
+        final String toEscape = template.substring(currentIndex + name.length() + 2, end);
+        segments.add(data -> {
+            final String escapableValue = compileIfNeeded(toEscape, templateLoader).apply(data);
+            if (escapableValue == null) {
+                return "";
+            }
+            return impl.apply(escapableValue);
+        });
+        return end;
     }
 
     private int findEndingParenthesis(final char[] chars, final int from) {

@@ -39,6 +39,7 @@ import javax.servlet.ServletContext;
 
 import org.apache.geronimo.microprofile.opentracing.common.impl.FinishedSpan;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.metrics.Metered;
 import org.eclipse.microprofile.metrics.MetricRegistry;
 import org.eclipse.microprofile.metrics.Snapshot;
@@ -65,6 +66,9 @@ public class MicroprofileDatabase {
     @Inject
     private MetricRegistry applicationRegistry;
 
+    @Inject
+    private HealthRegistry healthRegistry;
+
     private ScheduledExecutorService scheduler;
 
     private ScheduledFuture<?> pollFuture;
@@ -77,6 +81,7 @@ public class MicroprofileDatabase {
     private final Map<String, InMemoryDatabase<Snapshot>> histograms = new HashMap<>();
     private final Map<String, InMemoryDatabase<MeterSnapshot>> meters = new HashMap<>();
     private final Map<String, InMemoryDatabase<TimerSnapshot>> timers = new HashMap<>();
+    private final Map<String, InMemoryDatabase<CheckSnapshot>> checks = new HashMap<>();
 
     public InMemoryDatabase<Span> getSpans() {
         return spanDatabase;
@@ -102,43 +107,67 @@ public class MicroprofileDatabase {
         return timers;
     }
 
+    public Map<String, InMemoryDatabase<CheckSnapshot>> getChecks() {
+        return checks;
+    }
+
     private void poll() {
-        metrics.forEach((type, registry) -> {
-            registry.getCounters().forEach((name, counter) -> {
-                final String virtualName = getMetricStorageName(type, name);
-                final long count = counter.getCount();
-                getDb(counters, virtualName, registry, name).add(count);
-            });
+        metrics.forEach(this::updateMetrics);
 
-            registry.getGauges().forEach((name, gauge) -> {
-                final String virtualName = getMetricStorageName(type, name);
-                final Object value = gauge.getValue();
-                if (Number.class.isInstance(value)) {
-                    try {
-                        getDb(gauges, virtualName, registry, name).add(Number.class.cast(value).doubleValue());
-                    } catch (final NullPointerException | NumberFormatException nfe) {
-                        // ignore, we can't do much if the value is not a double
-                    }
-                } // else ignore, will not be able to do anything of it anyway
-            });
+        healthRegistry.doCheck().forEach(this::updateHealthCheck);
+    }
 
-            registry.getHistograms().forEach((name, histogram) -> {
-                final String virtualName = getMetricStorageName(type, name);
-                final Snapshot snapshot = histogram.getSnapshot();
-                getDb(histograms, virtualName, registry, name).add(snapshot);
-            });
+    private void updateHealthCheck(final HealthCheckResponse healthCheckResponse) {
+        final String name = healthCheckResponse.getName();
+        InMemoryDatabase<CheckSnapshot> db = checks.get(name);
+        if (db == null) {
+            db = new InMemoryDatabase<>("check");
+            final InMemoryDatabase<CheckSnapshot> existing = checks.putIfAbsent(name, db);
+            if (existing != null) {
+                db = existing;
+            }
+        }
+        db.add(new CheckSnapshot(
+                healthCheckResponse.getName(),
+                ofNullable(healthCheckResponse.getState()).orElse(HealthCheckResponse.State.DOWN).name(),
+                healthCheckResponse.getData().map(HashMap::new).orElseGet(HashMap::new)));
+    }
 
-            registry.getMeters().forEach((name, meter) -> {
-                final String virtualName = getMetricStorageName(type, name);
-                final MeterSnapshot snapshot = new MeterSnapshot(meter);
-                getDb(meters, virtualName, registry, name).add(snapshot);
-            });
+    private void updateMetrics(final String type, final MetricRegistry registry) {
+        registry.getCounters().forEach((name, counter) -> {
+            final String virtualName = getMetricStorageName(type, name);
+            final long count = counter.getCount();
+            getDb(counters, virtualName, registry, name).add(count);
+        });
 
-            registry.getTimers().forEach((name, timer) -> {
-                final String virtualName = getMetricStorageName(type, name);
-                final TimerSnapshot snapshot = new TimerSnapshot(new MeterSnapshot(timer), timer.getSnapshot());
-                getDb(timers, virtualName, registry, name).add(snapshot);
-            });
+        registry.getGauges().forEach((name, gauge) -> {
+            final String virtualName = getMetricStorageName(type, name);
+            final Object value = gauge.getValue();
+            if (Number.class.isInstance(value)) {
+                try {
+                    getDb(gauges, virtualName, registry, name).add(Number.class.cast(value).doubleValue());
+                } catch (final NullPointerException | NumberFormatException nfe) {
+                    // ignore, we can't do much if the value is not a double
+                }
+            } // else ignore, will not be able to do anything of it anyway
+        });
+
+        registry.getHistograms().forEach((name, histogram) -> {
+            final String virtualName = getMetricStorageName(type, name);
+            final Snapshot snapshot = histogram.getSnapshot();
+            getDb(histograms, virtualName, registry, name).add(snapshot);
+        });
+
+        registry.getMeters().forEach((name, meter) -> {
+            final String virtualName = getMetricStorageName(type, name);
+            final MeterSnapshot snapshot = new MeterSnapshot(meter);
+            getDb(meters, virtualName, registry, name).add(snapshot);
+        });
+
+        registry.getTimers().forEach((name, timer) -> {
+            final String virtualName = getMetricStorageName(type, name);
+            final TimerSnapshot snapshot = new TimerSnapshot(new MeterSnapshot(timer), timer.getSnapshot());
+            getDb(timers, virtualName, registry, name).add(snapshot);
         });
     }
 
@@ -227,14 +256,6 @@ public class MicroprofileDatabase {
             this.meter = meter;
             this.histogram = histogram;
         }
-
-        public MeterSnapshot getMeter() {
-            return meter;
-        }
-
-        public Snapshot getHistogram() {
-            return histogram;
-        }
     }
 
     public static class MeterSnapshot {
@@ -256,25 +277,17 @@ public class MicroprofileDatabase {
             this.rate5 = rate5;
             this.rate15 = rate15;
         }
+    }
 
-        public long getCount() {
-            return count;
-        }
+    public static class CheckSnapshot {
+        private final String name;
+        private final String state;
+        private final Map<String, Object> data;
 
-        public double getRateMean() {
-            return rateMean;
-        }
-
-        public double getRate1() {
-            return rate1;
-        }
-
-        public double getRate5() {
-            return rate5;
-        }
-
-        public double getRate15() {
-            return rate15;
+        private CheckSnapshot(final String name, final String state, final Map<String, Object> data) {
+            this.name = name;
+            this.state = state;
+            this.data = data;
         }
     }
 }

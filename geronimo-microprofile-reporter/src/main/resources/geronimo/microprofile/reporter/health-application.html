@@ -14,6 +14,19 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-<div class="tile @attributify($$value)">
-  <a href="@attributify($$value)">$$value</a>
+<h1>Application Health</h1>
+
+<div>
+    <h2>Overall State</h2>
+    <div class="health-check-state @if($globalStateOk,inline:green)@if($globalStateKo,inline:red)"></div>
+
+    <h2>Checks</h2>
+    <table>
+        <thead>
+        <tr><th>Name</th><th>State</th><th>Data</th></tr>
+        </thead>
+        <tbody>
+        @each($checks,incline:<tr><td>$$value.name</td><td>$$value.state</td><td>$$value.data</td></tr>)
+        </tbody>
+    </table>
 </div>
