@@ -14,34 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.microprofile.reporter.storage;
+package org.apache.geronimo.microprofile.reporter.storage.plugins.health;
 
-import static java.util.Collections.unmodifiableMap;
+import static org.junit.Assert.assertEquals;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.inject.Inject;
 
-public class Html {
-    private final String name;
-    private final Map<String, Object> data = new HashMap<>();
+import org.apache.meecrowave.junit.InjectRule;
+import org.apache.meecrowave.junit.MeecrowaveRule;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
 
-    public Html(final String name) {
-        this.name = name;
-    }
+public class HealthServiceTest {
+    @ClassRule
+    public static final MeecrowaveRule SERVER = new MeecrowaveRule();
 
-    public Html with(final String name, final Object data) {
-        if (data == null) {
-            return this;
-        }
-        this.data.put(name, data);
-        return this;
-    }
+    @Rule
+    public final InjectRule injector = new InjectRule(this);
 
-    String getName() {
-        return name;
-    }
+    @Inject
+    private HealthService service;
 
-    Map<String, Object> getData() {
-        return unmodifiableMap(data);
+    @Test
+    public void ensureHealthChecksWereRegistered() {
+        assertEquals(2, service.doCheck().count());
     }
 }

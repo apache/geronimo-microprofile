@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.microprofile.reporter.storage;
+package org.apache.geronimo.microprofile.reporter.storage.templating;
 
 import static java.util.stream.Collectors.joining;
 

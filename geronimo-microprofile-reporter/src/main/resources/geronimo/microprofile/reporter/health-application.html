@@ -18,7 +18,9 @@
 
 <div>
     <h2>Overall State</h2>
-    <div class="health-check-state @if($globalStateOk,inline:green)@if($globalStateKo,inline:red)"></div>
+    <div class="health-check-state health-check-@lowercase($globalState)">
+        <span>$globalState</span>
+    </div>
 
     <h2>Checks</h2>
     <table>
@@ -26,7 +28,7 @@
         <tr><th>Name</th><th>State</th><th>Data</th></tr>
         </thead>
         <tbody>
-        @each($checks,incline:<tr><td>$$value.name</td><td>$$value.state</td><td>$$value.data</td></tr>)
+        @each($checks,inline:<tr><td>$$value.name</td><td>$$value.state</td><td>$$value.data</td></tr>)
         </tbody>
     </table>
 </div>

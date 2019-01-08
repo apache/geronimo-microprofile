@@ -13,19 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.microprofile.reporter.storage;
+package org.apache.geronimo.microprofile.reporter.storage.plugins;
 
-import javax.enterprise.context.Dependent;
-
-import org.eclipse.microprofile.health.Health;
-import org.eclipse.microprofile.health.HealthCheck;
-import org.eclipse.microprofile.health.HealthCheckResponse;
-
-@Health
-@Dependent
-public class FakeCheck1 implements HealthCheck {
-    @Override
-    public HealthCheckResponse call() {
-        return HealthCheckResponse.named("check1").up().build();
-    }
-}
+public class Tick {}

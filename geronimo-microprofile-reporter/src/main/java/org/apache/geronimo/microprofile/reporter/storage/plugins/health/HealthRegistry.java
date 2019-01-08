@@ -14,59 +14,59 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.microprofile.reporter.storage;
-
-import static java.util.stream.Collectors.toList;
+package org.apache.geronimo.microprofile.reporter.storage.plugins.health;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Stream;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterDeploymentValidation;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.inject.spi.BeforeBeanDiscovery;
 import javax.enterprise.inject.spi.BeforeShutdown;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessBean;
-
-import org.eclipse.microprofile.health.Health;
-import org.eclipse.microprofile.health.HealthCheck;
-import org.eclipse.microprofile.health.HealthCheckResponse;
 
 public class HealthRegistry implements Extension {
     private static final Annotation[] NO_ANNOTATION = new Annotation[0];
 
     private final Collection<Bean<?>> beans = new ArrayList<>();
     private final Collection<CreationalContext<?>> contexts = new ArrayList<>();
-    private final List<HealthCheck> checks = new ArrayList<>();
 
-    public Stream<HealthCheckResponse> doCheck() {
-        return checks.stream().map(check -> invoke(check));
-    }
+    private Class<? extends Annotation> annotationMarker;
+    private Class<?> apiType;
 
-    private HealthCheckResponse invoke(final HealthCheck check) {
+    void onStart(@Observes final BeforeBeanDiscovery beforeBeanDiscovery) {
+        final ClassLoader loader = Thread.currentThread().getContextClassLoader();
         try {
-            return check.call();
-        } catch (final RuntimeException re) {
-            return HealthCheckResponse.named(check.getClass().getName())
-                                      .down()
-                                      .withData("exceptionMessage", re.getMessage())
-                                      .build();
+            annotationMarker = (Class<? extends Annotation>) loader.loadClass("org.eclipse.microprofile.health.Health");
+            apiType = loader.loadClass("org.eclipse.microprofile.health.HealthCheck");
+        } catch (final ClassNotFoundException e) {
+            // no-op
         }
     }
 
+    public Class<?> getApiType() {
+        return apiType;
+    }
+
     void findChecks(@Observes final ProcessBean<?> bean) {
-        if (bean.getAnnotated().isAnnotationPresent(Health.class) && bean.getBean().getTypes().contains(HealthCheck.class)) {
+        if (bean.getAnnotated().isAnnotationPresent(annotationMarker) && bean.getBean().getTypes().contains(apiType)) {
             beans.add(bean.getBean());
         }
     }
 
     void start(@Observes final AfterDeploymentValidation afterDeploymentValidation, final BeanManager beanManager) {
-        checks.addAll(beans.stream().map(it -> lookup(it, beanManager)).collect(toList()));
+        if (beans.isEmpty()) {
+            return;
+        }
+        final HealthService healthService = HealthService.class.cast(
+                beanManager.getReference(beanManager.resolve(beanManager.getBeans(HealthService.class)),
+                        HealthService.class, beanManager.createCreationalContext(null)));
+        beans.stream().map(it -> lookup(it, beanManager)).forEach(healthService::register);
     }
 
     void stop(@Observes final BeforeShutdown beforeShutdown) {
@@ -83,14 +83,14 @@ public class HealthRegistry implements Extension {
         }
     }
 
-    private HealthCheck lookup(final Bean<?> bean, final BeanManager manager) {
+    private Object lookup(final Bean<?> bean, final BeanManager manager) {
         final Class<?> beanClass = bean.getBeanClass();
         final Bean<?> resolvedBean = manager.resolve(manager.getBeans(
-                beanClass != null ? beanClass : HealthCheck.class, bean.getQualifiers().toArray(NO_ANNOTATION)));
+                beanClass != null ? beanClass : apiType, bean.getQualifiers().toArray(NO_ANNOTATION)));
         final CreationalContext<Object> creationalContext = manager.createCreationalContext(null);
         if (!manager.isNormalScope(resolvedBean.getScope())) {
             contexts.add(creationalContext);
         }
-        return HealthCheck.class.cast(manager.getReference(resolvedBean, HealthCheck.class, creationalContext));
+        return manager.getReference(resolvedBean, apiType, creationalContext);
     }
 }

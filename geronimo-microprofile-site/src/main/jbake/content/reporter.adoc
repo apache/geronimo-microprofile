@@ -2,10 +2,13 @@
 :jbake-date: 2019-01-07
 :icons: font
 
-Apache Geronimo Microprofile Reporter allows to visualize spans (OpenTracing) and Metrics
+Apache Geronimo Microprofile Reporter allows to visualize spans (OpenTracing), the health of your application and Metrics
 in a small webapp.
 
 IMPORTANT: this is for test and demo purposes, this is not yet intended to be deployed in production.
+
+Also note that part of the UI are designed to be auto activated when relevant, typically, if you don't have Microprofile
+Health, the associated UI will not be active.
 
 == Dependencies
 

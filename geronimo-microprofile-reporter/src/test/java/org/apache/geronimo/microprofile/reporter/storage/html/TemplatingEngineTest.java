@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.apache.geronimo.microprofile.reporter.storage.TemplatingEngine;
+import org.apache.geronimo.microprofile.reporter.storage.templating.TemplatingEngine;
 import org.junit.Test;
 
 public class TemplatingEngineTest {

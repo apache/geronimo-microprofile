@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.microprofile.reporter.storage;
+package org.apache.geronimo.microprofile.reporter.storage.front;
 
 import static java.util.stream.Collectors.joining;
 import static javax.ws.rs.core.MediaType.TEXT_HTML;
@@ -42,6 +42,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
+
+import org.apache.geronimo.microprofile.reporter.storage.templating.TemplatingEngine;
 
 @Provider
 @Dependent

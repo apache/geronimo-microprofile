@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.microprofile.reporter.storage;
+package org.apache.geronimo.microprofile.reporter.storage.plugins.tracing;
 
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
@@ -78,10 +78,10 @@ public class SpanMapper {
             return null;
         }
         try {
-            final Collection<LogEntry> logs = ofNullable((Collection<?>) getLogs.invoke(span))
+            final Collection<SpanEntry.LogEntry> logs = ofNullable((Collection<?>) getLogs.invoke(span))
                     .map(it -> it.stream().map(log -> {
                         try {
-                            return new LogEntry(Long.class.cast(logGetTimestampMicros.invoke(log)), Map.class.cast(logGetFields.invoke(log)));
+                            return new SpanEntry.LogEntry(Long.class.cast(logGetTimestampMicros.invoke(log)), Map.class.cast(logGetFields.invoke(log)));
                         } catch (final IllegalAccessException e) {
                             throw new IllegalStateException(e);
                         } catch (final InvocationTargetException e) {
@@ -107,87 +107,5 @@ public class SpanMapper {
 
     private static String stringify(final Object value) {
         return value == null ? null : String.valueOf(value);
-    }
-
-    public static class LogEntry {
-
-        private final long timestampMicros;
-
-        private final Map<String, Object> fields;
-
-        private LogEntry(final long timestampMicros, final Map<String, Object> fields) {
-            this.timestampMicros = timestampMicros;
-            this.fields = fields;
-        }
-
-        public long getTimestampMicros() {
-            return timestampMicros;
-        }
-
-        public Map<String, Object> getFields() {
-            return fields;
-        }
-    }
-
-    public static class SpanEntry {
-        private final String spanId;
-        private final String traceId;
-        private final String parentId;
-        private final String name;
-        private final long timestamp;
-        private final long duration;
-        private final String kind;
-        private final Map<String, Object> tags;
-        private final Collection<LogEntry> getLogs;
-
-        private SpanEntry(final String spanId, final String traceId, final String parentId, final String name,
-                final long timestamp, final long duration, final String kind, final Map<String, Object> tags,
-                final Collection<LogEntry> getLogs) {
-            this.spanId = spanId;
-            this.traceId = traceId;
-            this.parentId = parentId;
-            this.name = name;
-            this.timestamp = timestamp;
-            this.duration = duration;
-            this.kind = kind;
-            this.tags = tags;
-            this.getLogs = getLogs;
-        }
-
-        public String getSpanId() {
-            return spanId;
-        }
-
-        public String getTraceId() {
-            return traceId;
-        }
-
-        public String getParentId() {
-            return parentId;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public long getTimestamp() {
-            return timestamp;
-        }
-
-        public long getDuration() {
-            return duration;
-        }
-
-        public String getKind() {
-            return kind;
-        }
-
-        public Map<String, Object> getTags() {
-            return tags;
-        }
-
-        public Collection<LogEntry> getGetLogs() {
-            return getLogs;
-        }
     }
 }

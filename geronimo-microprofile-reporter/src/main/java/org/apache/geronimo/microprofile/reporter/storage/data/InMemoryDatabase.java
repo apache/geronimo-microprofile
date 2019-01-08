@@ -14,12 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.microprofile.reporter.storage;
+package org.apache.geronimo.microprofile.reporter.storage.data;
 
 import static java.util.stream.Collectors.toMap;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.TimeUnit;
@@ -67,7 +66,7 @@ public class InMemoryDatabase<T> {
         }
     }
 
-    void add(final T value) {
+    public void add(final T value) {
         ensureUpToDate();
 
         final long now = System.currentTimeMillis();

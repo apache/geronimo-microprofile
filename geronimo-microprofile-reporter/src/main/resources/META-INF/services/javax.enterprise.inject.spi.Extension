@@ -1,1 +1,2 @@
-org.apache.geronimo.microprofile.reporter.storage.HealthRegistry
+org.apache.geronimo.microprofile.reporter.storage.plugins.health.HealthRegistry
+org.apache.geronimo.microprofile.reporter.storage.plugins.tracing.TracingExtension
