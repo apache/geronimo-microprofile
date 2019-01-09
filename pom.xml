@@ -34,7 +34,7 @@
   </description>
 
   <properties>
-    <meecrowave.version>1.2.4</meecrowave.version>
+    <meecrowave.version>1.2.5</meecrowave.version>
   </properties>
 
   <modules>

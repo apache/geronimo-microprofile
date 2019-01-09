@@ -79,8 +79,7 @@
       <plugin>
         <groupId>org.apache.meecrowave</groupId>
         <artifactId>meecrowave-maven-plugin</artifactId>
-        <!--<version>${meecrowave.version}</version>-->
-        <version>1.2.5-SNAPSHOT</version> <!-- to avoid to scan poms and break the startup -->
+        <version>${meecrowave.version}</version>
         <configuration>
           <cdiConversation>false</cdiConversation>
           <scanningIncludes>geronimo-metrics</scanningIncludes>
