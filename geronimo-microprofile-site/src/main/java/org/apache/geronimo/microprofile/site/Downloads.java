@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -55,6 +54,7 @@ public class Downloads {
     private static final SAXParserFactory FACTORY = SAXParserFactory.newInstance();
 
     // always available once the release passed compared to central
+    // note: if you have some stability issues (connection reset) then set that to MVN_BASE
     private static final String ASF_BASE = "https://repository.apache.org/content/repositories/releases/";
 
     // the entry point we want on the download page
@@ -74,14 +74,19 @@ public class Downloads {
     public static void main(final String[] args) {
         Locale.setDefault(Locale.ENGLISH);
 
-        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "512");
+        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "256");
 
         final List<Download> downloads = Stream.of("org/apache/geronimo/config/geronimo-config-impl", "org/apache/geronimo/safeguard/safeguard-impl",
                 "org/apache/geronimo/geronimo-jwt-auth", "org/apache/geronimo/geronimo-opentracing",
                 "org/apache/geronimo/geronimo-health", "org/apache/geronimo/geronimo-metrics",
-                "org/apache/geronimo/geronimo-openapi-impl", "org/apache/geronimo/geronimo-microprofile-aggregator")
+                "org/apache/geronimo/geronimo-openapi-impl", "org/apache/geronimo/geronimo-microprofile-aggregator",
+                "org/apache/geronimo/utilda")
                 .flatMap(Downloads::toVersions)
-                .map(v -> v.base.endsWith("geronimo-microprofile-aggregator") ? v.extensions("pom") : v.extensions("jar"))
+                .flatMap(v -> v.base.endsWith("utilda") ?
+                        Stream.of(v.classifiers("all").extensions("zip"), new Version(v.base, v.version).extensions("pom")) :
+                        Stream.of(v))
+                .map(v -> v.base.endsWith("geronimo-microprofile-aggregator") ? v.extensions("pom") : v)
+                .map(v -> v.extensions.isEmpty() ? v.extensions("jar") : v)
                 .flatMap(Downloads::toDownloadable).map(Downloads::fillDownloadable).filter(Objects::nonNull)
                 .sorted(Downloads::versionComparator)
                 .map(Downloads::toCentral)
@@ -185,26 +190,37 @@ public class Downloads {
     }
 
     private static Download fillDownloadable(final Download download) {
-        try {
-            final URL url = new URL(download.url);
-            final HttpURLConnection connection = HttpURLConnection.class.cast(url.openConnection());
-            connection.setConnectTimeout((int) TimeUnit.SECONDS.toMillis(30));
-            final int responseCode = connection.getResponseCode();
-            if (responseCode != HttpURLConnection.HTTP_OK) {
-                if (HttpURLConnection.HTTP_NOT_FOUND != responseCode) {
-                    System.err.println("Got " + responseCode + " for " + download.url);
+        final int maxRetries = 3;
+        for (int i = 0; i < maxRetries; i++) {
+            try {
+                final URL url = new URL(download.url);
+                final HttpURLConnection connection = HttpURLConnection.class.cast(url.openConnection());
+                connection.setConnectTimeout((int) TimeUnit.SECONDS.toMillis(30));
+                final int responseCode = connection.getResponseCode();
+                if (responseCode != HttpURLConnection.HTTP_OK) {
+                    if (HttpURLConnection.HTTP_NOT_FOUND != responseCode) {
+                        System.err.println("Got " + responseCode + " for " + download.url);
+                    }
+                    return null;
+                }
+
+                download.setDate(connection.getHeaderField("Last-Modified").replaceAll(" +", " "));
+                download.setSize(toMega(ofNullable(connection.getHeaderField("Content-Length")).map(Long::parseLong).orElse(0L),
+                        ofNullable(connection.getHeaderField("Accept-Ranges")).orElse("bytes")));
+
+                connection.getInputStream().close();
+                break;
+            } catch (final IOException e) {
+                if (i < maxRetries - 1) {
+                    continue;
+                }
+                if (Boolean.getBoolean("debug")) {
+                    e.printStackTrace();
+                } else {
+                    System.err.println("[ERROR] @fillDownload: " + e.getMessage() + " for " + download);
                 }
                 return null;
             }
-
-            download.setDate(connection.getHeaderField("Last-Modified").replaceAll(" +", " "));
-            download.setSize(toMega(ofNullable(connection.getHeaderField("Content-Length")).map(Long::parseLong).orElse(0L),
-                    ofNullable(connection.getHeaderField("Accept-Ranges")).orElse("bytes")));
-
-            connection.getInputStream().close();
-        } catch (final IOException e) {
-            e.printStackTrace();
-            return null;
         }
         return download;
     }
@@ -244,6 +260,8 @@ public class Downloads {
         } catch (final Exception e) {
             if (Boolean.getBoolean("debug")) {
                 e.printStackTrace();
+            } else {
+                System.err.println("[ERROR] @toVersions: " + e.getMessage() + " for " + baseUrl);
             }
             return Stream.empty();
         }
@@ -384,6 +402,21 @@ public class Downloads {
 
         public void setSize(final long size) {
             this.size = size;
+        }
+
+        @Override
+        public String toString() {
+            return "Download{" +
+                    "name='" + name + '\'' +
+                    ", classifier='" + classifier + '\'' +
+                    ", version='" + version + '\'' +
+                    ", format='" + format + '\'' +
+                    ", url='" + url + '\'' +
+                    ", sha1='" + sha1 + '\'' +
+                    ", asc='" + asc + '\'' +
+                    ", date='" + date + '\'' +
+                    ", size=" + size +
+                    '}';
         }
     }
 
