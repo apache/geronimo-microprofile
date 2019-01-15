@@ -80,7 +80,7 @@ public class Downloads {
                 "org/apache/geronimo/geronimo-jwt-auth", "org/apache/geronimo/geronimo-opentracing",
                 "org/apache/geronimo/geronimo-health", "org/apache/geronimo/geronimo-metrics",
                 "org/apache/geronimo/geronimo-openapi-impl", "org/apache/geronimo/geronimo-microprofile-aggregator",
-                "org/apache/geronimo/utilda")
+                "org/apache/geronimo/utilda", "org/apache/geronimo/geronimo-microprofile-reporter")
                 .flatMap(Downloads::toVersions)
                 .flatMap(v -> v.base.endsWith("utilda") ?
                         Stream.of(v.classifiers("all").extensions("zip"), new Version(v.base, v.version).extensions("pom")) :
