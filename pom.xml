@@ -34,7 +34,10 @@
   </description>
 
   <properties>
-    <meecrowave.version>1.2.5</meecrowave.version>
+    <meecrowave.version>1.2.6</meecrowave.version>
+
+    <microprofile-config-api.version>1.3</microprofile-config-api.version>
+    <geronimo-config.version>1.2.1</geronimo-config.version>
   </properties>
 
   <modules>
@@ -42,6 +45,7 @@
     <module>utilda</module>
     <module>geronimo-microprofile-site</module>
     <module>geronimo-microprofile-reporter</module>
+    <module>microprofile-extensions</module>
   </modules>
 
   <scm>

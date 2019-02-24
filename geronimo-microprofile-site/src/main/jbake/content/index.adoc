@@ -31,7 +31,7 @@ Note we also provide some pom aggregator to import all the stack at once:
 
 If you want to investigate your Microprofile setup you can also play with our reporter link:reporter.html[UI/webapp].
 
-Finally we provide μ~ (utilda) which is a pom with link:http://openwebbeans.apache.org/meecrowave/[Apache Meecrowave] and the Aggregator pom which makes
+We also provide μ~ (utilda) which is a pom with link:http://openwebbeans.apache.org/meecrowave/[Apache Meecrowave] and the Aggregator pom which makes
 you a one dependency Microprofile 2.0 server, ready to use:
 
 [source,xml]
@@ -45,3 +45,6 @@ you a one dependency Microprofile 2.0 server, ready to use:
 ----
 
 WARNING: the 1.0.0 release binary has some versioning issues, ensure to evaluate the snapshot until we release next version please.
+
+Finally we provide a set of Microprofile extensions to make it faster to be production and cloud ready
+like a secure Microprofile config converter to credentials and a Docker integration. Read more on the dedicated link:extensions.html[page].

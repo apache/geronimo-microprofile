@@ -1,0 +1,2 @@
+org.apache.geronimo.microprofile.extensions.config.docker.DockerSecretConfigSource
+org.apache.geronimo.microprofile.extensions.config.docker.DockerConfigConfigSource
