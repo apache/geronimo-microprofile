@@ -67,7 +67,13 @@
     <dependency>
       <groupId>org.apache.geronimo.safeguard</groupId>
       <artifactId>safeguard-impl</artifactId>
-      <version>1.2.0</version>
+      <version>1.2.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.geronimo.specs</groupId>
+          <artifactId>geronimo-interceptor_1.2_spec</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- jwt auth -->
@@ -85,7 +91,7 @@
     <dependency>
       <groupId>org.apache.geronimo</groupId>
       <artifactId>geronimo-jwt-auth</artifactId>
-      <version>1.0.1</version>
+      <version>1.0.2</version>
     </dependency>
 
     <!-- opentracing -->
@@ -128,14 +134,14 @@
     <dependency>
       <groupId>org.apache.geronimo</groupId>
       <artifactId>geronimo-opentracing</artifactId>
-      <version>1.0.1</version>
+      <version>1.0.2</version>
     </dependency>
 
     <!-- rest client -->
     <dependency>
       <groupId>org.eclipse.microprofile.rest.client</groupId>
       <artifactId>microprofile-rest-client-api</artifactId>
-      <version>1.1</version>
+      <version>1.2.0</version>
       <exclusions>
         <exclusion>
           <groupId>javax.enterprise</groupId>
@@ -158,7 +164,7 @@
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-rs-mp-client</artifactId>
-      <version>3.2.7</version>
+      <version>3.3.0</version>
       <exclusions>
         <exclusion>
           <groupId>javax.annotation</groupId>
@@ -167,6 +173,30 @@
         <exclusion>
           <groupId>javax.json</groupId>
           <artifactId>javax.json-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>jakarta.ws.rs</groupId>
+          <artifactId>jakarta.ws.rs-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.glassfish.jaxb</groupId>
+          <artifactId>jaxb-runtime</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.glassfish.jaxb</groupId>
+          <artifactId>jaxb-xjc</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.woodstox</groupId>
+          <artifactId>woodstox-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.ws.xmlschema</groupId>
+          <artifactId>xmlschema-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>jakarta.xml.bind</groupId>
+          <artifactId>jakarta.xml.bind-api</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -210,14 +240,14 @@
     <dependency>
       <groupId>org.apache.geronimo</groupId>
       <artifactId>geronimo-metrics</artifactId>
-      <version>1.0.2</version>
+      <version>1.0.3</version>
     </dependency>
 
     <!-- openapi -->
     <dependency>
       <groupId>org.eclipse.microprofile.openapi</groupId>
       <artifactId>microprofile-openapi-api</artifactId>
-      <version>1.1-RC1</version>
+      <version>1.1.1</version>
       <exclusions>
         <exclusion>
           <groupId>org.osgi</groupId>
@@ -228,7 +258,7 @@
     <dependency>
       <groupId>org.apache.geronimo</groupId>
       <artifactId>geronimo-openapi-impl</artifactId>
-      <version>1.0.5</version>
+      <version>1.0.6</version>
     </dependency>
   </dependencies>
 </project>
