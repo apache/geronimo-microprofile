@@ -21,7 +21,7 @@
   <parent>
     <artifactId>microprofile-extensions-config</artifactId>
     <groupId>org.apache.geronimo</groupId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2</version>
   </parent>
 
   <artifactId>docker-configsource</artifactId>
