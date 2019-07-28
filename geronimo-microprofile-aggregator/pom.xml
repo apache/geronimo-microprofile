@@ -29,7 +29,7 @@
   <description>Aggregator of all last versions of Geronimo specifications.</description>
 
   <properties>
-    <microprofile.platform.version>1.4</microprofile.platform.version>
+    <microprofile.platform.version>2.0</microprofile.platform.version>
     <geronimo-microprofile.Automatic-Module-Name>${project.groupId}.microprofile.aggregator</geronimo-microprofile.Automatic-Module-Name>
   </properties>
 
@@ -164,7 +164,7 @@
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-rs-mp-client</artifactId>
-      <version>3.3.0</version>
+      <version>${cxf.version}</version>
       <exclusions>
         <exclusion>
           <groupId>javax.annotation</groupId>

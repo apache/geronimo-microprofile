@@ -34,7 +34,8 @@
   </description>
 
   <properties>
-    <meecrowave.version>1.2.7</meecrowave.version>
+    <meecrowave.version>1.2.8</meecrowave.version>
+    <cxf.version>3.3.2</cxf.version>
 
     <microprofile-config-api.version>1.3</microprofile-config-api.version>
     <geronimo-config.version>1.2.2</geronimo-config.version>
