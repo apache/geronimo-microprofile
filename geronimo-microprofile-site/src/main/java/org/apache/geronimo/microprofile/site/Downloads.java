@@ -137,7 +137,7 @@ public class Downloads {
             return nameComp;
         }
 
-        final int versionComp = o2.version.compareTo(o1.version);
+        final int versionComp = -compareVersions(o1.version, o2.version);
         if (versionComp != 0) {
             return versionComp;
         }
@@ -150,6 +150,28 @@ public class Downloads {
         }
 
         return o1.url.compareTo(o2.url);
+    }
+
+    private static int compareVersions(final String version1, final String version2) {
+        if (version1.equals(version2)) {
+            return 0;
+        }
+        final int[] segments1 = parseVersion(version1);
+        final int[] segments2 = parseVersion(version2);
+        for (int i = 0; i < Math.min(segments1.length, segments2.length); i++) {
+            if (segments1[i] < segments2[i]) {
+                return -1;
+            } else if (segments1[i] > segments2[i]) {
+                return 1;
+            }
+        }
+        return segments1.length - segments2.length; // can't be equal otherwise it would have exited at the first test
+    }
+
+    private static int[] parseVersion(final String version) {
+        return Stream.of(version.split("\\."))
+                .mapToInt(Integer::parseInt)
+                .toArray();
     }
 
     private static Download toCentral(final Download download) {
