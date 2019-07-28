@@ -91,7 +91,7 @@
     <dependency>
       <groupId>org.apache.geronimo</groupId>
       <artifactId>geronimo-jwt-auth</artifactId>
-      <version>1.0.2</version>
+      <version>1.0.3</version>
     </dependency>
 
     <!-- opentracing -->
@@ -207,7 +207,7 @@
     <dependency>
       <groupId>org.eclipse.microprofile.health</groupId>
       <artifactId>microprofile-health-api</artifactId>
-      <version>1.0</version>
+      <version>2.0.1</version>
       <exclusions>
         <exclusion>
           <groupId>javax.inject</groupId>
@@ -222,7 +222,7 @@
     <dependency>
       <groupId>org.apache.geronimo</groupId>
       <artifactId>geronimo-health</artifactId>
-      <version>1.0.1</version>
+      <version>1.0.2</version>
     </dependency>
 
     <!-- metrics -->
@@ -258,7 +258,7 @@
     <dependency>
       <groupId>org.apache.geronimo</groupId>
       <artifactId>geronimo-openapi-impl</artifactId>
-      <version>1.0.9</version>
+      <version>1.0.10</version>
     </dependency>
   </dependencies>
 </project>
